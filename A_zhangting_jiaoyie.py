@@ -5,33 +5,47 @@ from my_time_func import get_my_start_end_date_list, get_today_date
 from select_shares import select_zhangtingban_df, select_zhaban_df
 
 
-def query_dailytrade_by_date_and_type(queryday, type):
-    if type == '涨停':
+def query_dailytrade_by_date_and_type(queryday, querytype):
+    if querytype == '涨停':
         shares_df = select_zhangtingban_df(queryday)
-    elif type == '炸板':
+    elif querytype == '炸板':
         shares_df = select_zhaban_df(queryday)
 
     # 添加个股信息
     share_df_full = add_share_msg_to_df(shares_df)
-    # 按照交易额排序，并取值
-    share_df_amount = share_df_full.sort_values(by='amount', ascending=False, ignore_index=True).loc[:,
-                      ['ts_code', 'close', 'name', 'amount']]
+    # 并取值,待排序
+    share_df_amount = share_df_full.loc[:, ['ts_code', 'close', 'name', 'amount', 'pct_chg', 'pre_close']]
 
-    # print('序号      ' + '    交易额    ' + '  收盘价 ')
+    # 按照涨幅和交易额排序
+    share_df_amount_chg = share_df_full.loc[:, ['ts_code', 'close', 'name', 'amount', 'pct_chg', 'pre_close']].astype(
+        {'amount': 'float64', 'pct_chg': 'float64'})
+    # 将涨跌幅按照30，20，10粗略分类后排序
+    share_df_amount_chg['pct_chg'] = share_df_amount_chg['pct_chg'].round(0)
+
+    if querytype == '涨停':
+        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by=['pct_chg', 'amount'], ascending=False,
+                                                                      ignore_index=True)
+
+    elif querytype == '炸板':
+        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by='amount', ascending=False,
+                                                                      ignore_index=True)
+
     data_list = []
-    for k in range(0, len(share_df_amount)):
-        code_name = share_df_amount.iloc[k, 0] + share_df_amount.iloc[k, 2]
-        close = '%.2f' % share_df_amount.iloc[k, 1]
-        amount = '%.2f' % (share_df_amount.iloc[k, 3] / 100000)
-        data_list.append([k + 1, code_name[7:11], str(amount) + '亿', str(close)])
-
-        # print(str(k + 1) + '   ' + code_name[7:11] + '  ' + str(amount) + '亿' + '   ' + str(close))
+    # 按照排序后的列表顺序导出到excel
+    for k in range(0, len(share_df_amount_chg_ordered)):
+        code_name = share_df_amount_chg_ordered.iloc[k, 0] + share_df_amount_chg_ordered.iloc[k, 2]
+        close = '%.2f' % share_df_amount_chg_ordered.iloc[k, 1]
+        pre_close = '%.2f' % share_df_amount_chg_ordered.iloc[k, 5]
+        amount = '%.2f' % (share_df_amount_chg_ordered.iloc[k, 3] / 100000)
+        pct_chg = '%.2f' % (float(close) / float(pre_close) * 100 - 100)
+        data_list.append([k + 1, code_name[7:11], str(amount), str(close), str(pct_chg)])
 
     # 抖音格式
-    my_df = pd.DataFrame(data_list, columns=['序号', '名称', '交易额', '收盘'])
+    my_df = pd.DataFrame(data_list, columns=['序号', '名称', '交易额（亿）', '收盘', '涨跌幅（%）'])
+
     print(my_df)
 
-    path = r'D:\00 量化交易\\' + queryday + type + '.xlsx'
+    path = r'D:\00 量化交易\\' + queryday + querytype + '.xlsx'
     my_df.to_excel(path, sheet_name='1', engine='openpyxl')
 
 
