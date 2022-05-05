@@ -88,7 +88,7 @@ def date_list_lbtt(startday, enddaste):
 
 
 # 查询单日连板天梯
-oneday_lbtt('20220429')
+oneday_lbtt('20220505')
 
 # 查询今日连板天梯
 # today_lbtt()

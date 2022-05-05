@@ -41,9 +41,9 @@ def qinxu_oneday(querday):
     print('跌停：' + str(n_dieting) + '个')
 
     print('-------------------------------')
-    print('备注：暂时只统计10%涨跌幅个股。')
+    print('备注：忽略部分ST个股。')
 
 
-qinxu_oneday('20220429')
+qinxu_oneday('20220505')
 
 
