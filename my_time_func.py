@@ -99,5 +99,3 @@ for i in range(x.size):
 
 print(x[0])
 '''
-'''timeArray = time.strptime(data.time[0], "%Y%m%d%H%M%S%f")
-resu = time.strftime("%Y%m%d-%H:%M:%S", timeArray)'''
