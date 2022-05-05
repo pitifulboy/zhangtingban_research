@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 import pandas as pd
 
 
-# 涨停股票dataframe
+# 涨停股票dataframe,根据涨跌幅限制选择
 
 def select_zhangtingban_df(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
@@ -13,6 +13,9 @@ def select_zhangtingban_df(tradedate):
     # 涨停个股角标数字
     share_list_num = []
     for i in range(len(df1)):
+        ts_code =df1['ts_code'][i]
+
+
         close = '%.2f' % (df1["close"][i])
 
         pre_close = df1["pre_close"][i]
