@@ -8,15 +8,15 @@
 def get_zhangdie_limit(ts_code):
     limit = 0
     if ts_code[0:1] == '0':
-        limit = 10
+        limit = 0.1
     elif ts_code[0:1] == '3':
-        limit = 20
+        limit = 0.2
     elif ts_code[0:1] == '4':
-        limit = 30
+        limit = 0.3
     elif ts_code[0:1] == '8':
-        limit = 30
+        limit = 0.3
     elif ts_code[0:2] == '68':
-        limit = 30
+        limit = 0.3
     elif ts_code[0:1] == '6':
-        limit = 10
+        limit = 0.1
     return limit

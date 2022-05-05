@@ -2,9 +2,10 @@
 from sqlalchemy import create_engine
 import pandas as pd
 
+from classify_shares_market import get_zhangdie_limit
 
-# 涨停股票dataframe,根据涨跌幅限制选择
 
+# 涨停股票dataframe,根据涨跌幅限制选择.10%,20%,30%涨跌幅
 def select_zhangtingban_df(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
     mysql_1 = "SELECT  * FROM dailytrade WHERE trade_date = '" + tradedate + "' "
@@ -13,14 +14,14 @@ def select_zhangtingban_df(tradedate):
     # 涨停个股角标数字
     share_list_num = []
     for i in range(len(df1)):
-        ts_code =df1['ts_code'][i]
-
+        ts_code = df1['ts_code'][i]
+        limit = get_zhangdie_limit(ts_code)
 
         close = '%.2f' % (df1["close"][i])
 
         pre_close = df1["pre_close"][i]
         # 涨停价
-        up_limit = '%.2f' % (pre_close * 1.1)
+        up_limit = '%.2f' % (pre_close * (1 + limit))
 
         if close == up_limit:
             share_list_num.append(i)
@@ -28,7 +29,7 @@ def select_zhangtingban_df(tradedate):
     return df1.iloc[share_list_num]
 
 
-# 选出炸板股票dataframe
+# 选出炸板股票dataframe，根据涨跌幅限制选择.10%,20%,30%涨跌幅
 def select_zhaban_df(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
     mysql_1 = "SELECT  * FROM dailytrade WHERE trade_date = '" + tradedate + "' "
@@ -36,11 +37,14 @@ def select_zhaban_df(tradedate):
     share_list_num = []
 
     for i in range(len(df1)):
+        ts_code = df1['ts_code'][i]
+        limit = get_zhangdie_limit(ts_code)
+
         high = '%.2f' % (df1["high"][i])
         close = '%.2f' % (df1["close"][i])
         pre_close = df1["pre_close"][i]
         # 涨停价
-        up_limit = '%.2f' % (pre_close * 1.1)
+        up_limit = '%.2f' % (pre_close * (1 + limit))
 
         # 炸板股票
         if high == up_limit and close < up_limit:
@@ -49,7 +53,7 @@ def select_zhaban_df(tradedate):
     return df1.iloc[share_list_num]
 
 
-# 跌停股票dataframe
+# 跌停股票dataframe,，根据涨跌幅限制选择.10%,20%,30%涨跌幅
 
 def select_dietingban_df(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
@@ -59,10 +63,13 @@ def select_dietingban_df(tradedate):
     share_list_num = []
 
     for i in range(len(df1)):
+        ts_code = df1['ts_code'][i]
+        limit = get_zhangdie_limit(ts_code)
+
         close = '%.2f' % (df1["close"][i])
         pre_close = df1["pre_close"][i]
         # 跌停价
-        down_limit = '%.2f' % (pre_close * 0.9)
+        down_limit = '%.2f' % (pre_close * (1-limit))
 
         if close == down_limit:
             share_list_num.append(i)
@@ -121,17 +128,6 @@ def select_share_by_date(tradedate):
     return df1
 
 
-'''
-# 选出某一天所有股票代码
-
-def select_sharecode_by_date(tradedate):
-    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
-    mysql_1 = "SELECT  * FROM dailytrade WHERE trade_date = '" + tradedate + "' "
-    df1 = pd.read_sql(mysql_1, conn)
-    df_sharecode = df1.ts_code
-
-    return df_sharecode
-'''
 
 
 # 获取股票中文名称
@@ -189,6 +185,7 @@ def select_one_day_longhubang(tradedate):
     mysql = "SELECT  * FROM longhubang WHERE trade_date = '" + tradedate + "'"
     df = pd.read_sql(mysql, conn)
     return df
+
 
 # 选择全部龙虎榜
 def get_longhubang():
