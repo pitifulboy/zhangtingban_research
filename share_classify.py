@@ -1,6 +1,6 @@
 # 建立mysql数据库的连接
 import itertools
-from select_shares import select_chuban, select_msg_by_shareslist
+from select_shares import select_msg_by_shareslist, select_zhangtingban_df
 from tushare_to_baostock import tuhshare_to_baostock_sharecode, tuhshare_date_to_baostock
 from select_shares import select_5m_data_bydate
 import pandas as pd
@@ -71,25 +71,10 @@ def judge_share_type(df):
 
     return share_type
 
-
-'''
-for i in range(0, len(list)):  # len(list)
-    # 将tushare代码（000001.SZ）转换为baostock股票代码样式(sz.000001)
-    baostock_code = tuhshare_to_baostock_sharecode(list[i])
-    # 选出指定代码的数据
-    df1 = df[df.code == baostock_code]
-    # 判断涨停板类型
-    # print(judge_share_type(df1))
-    df2 = df1.copy()
-    # 从日期时间中选出小时分钟。
-    df2['time'] = df1['time'].apply(lambda x: (datetime.strptime(x, "%Y%m%d%H%M%S%f")).strftime("%H:%M"))
-    print(df2)'''
-
-
-# 获取某日回封板股票list
+'''# 获取某日回封板股票list
 def select_shares_zhangting_type(tradedate_tushare):
     # 获取触板股票列表
-    list = select_chuban(tradedate_tushare)
+    list = select_zhangtingban_df(tradedate_tushare)
     # 获取股票中文名称
     df_msg = select_msg_by_shareslist(list)
 
@@ -113,6 +98,4 @@ def select_shares_zhangting_type(tradedate_tushare):
     return dfs
 
 
-'''dd = select_shares_zhangting_type('20220328')
-print(dd)
 '''

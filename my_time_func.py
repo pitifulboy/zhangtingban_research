@@ -92,10 +92,3 @@ def get_my_start_end_date_list(startdate, enddate, type_str):
     return new_list
 
 
-'''x = pd.date_range('20220101', periods=100)
-
-for i in range(x.size):
-    print(x[i])
-
-print(x[0])
-'''
