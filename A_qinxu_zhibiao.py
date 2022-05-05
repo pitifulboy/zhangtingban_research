@@ -46,9 +46,3 @@ def qinxu_oneday(querday):
 
 qinxu_oneday('20220429')
 
-'''
-    mypath = r'D:\00 量化交易\涨停分析.xlsx'
-    print(df_chuban_type)
-
-    df_chuban_type.to_excel(mypath, '情绪数据', index=False, engine='openpyxl')
-'''
