@@ -5,17 +5,15 @@ from select_shares import get_longhubang
 import pandas as pd
 
 
-
-
-def get_top_exalter100():
+def get_top_exalter(n):
     # 获取全部龙虎榜数据
     lhb_df = get_longhubang().fillna(value='0')
     # 透视
     lhb_df_povit = pd.pivot_table(lhb_df, values='buy', index='exalter', columns='side', aggfunc=np.sum, fill_value=0)
     # 排序,按照买入交易额降序
-    lhb_df_sorted = lhb_df_povit.sort_values(by='0', ascending=False).head(100)
-    top100_list = lhb_df_sorted.index.tolist()
-    return top100_list
+    lhb_df_sorted = lhb_df_povit.sort_values(by='0', ascending=False).head(n)
+    top_list = lhb_df_sorted.index.tolist()
+    return top_list
 
 
 # 根据席位查询历史龙虎榜
@@ -35,4 +33,7 @@ def query_longhubang_by_exalter(exalter):
     return share_df_full_partvalues
 
 
-print(get_top_exalter100())
+mylist = get_top_exalter(200)
+l = len(mylist)
+for i in range(0, l):
+    print(mylist[i])

@@ -48,7 +48,7 @@ def update_tradedata_from_toshare_by_datelist(start, end):
         update_tradedata_from_toshare(trade_date)
 
 
-update_tradedata_from_toshare('20220505')
+update_tradedata_from_toshare('20220506')
 
 '''# 更新一段时间
 
