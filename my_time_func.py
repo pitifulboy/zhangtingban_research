@@ -45,7 +45,8 @@ def date_list_gen_tushare_n(n, enddate):
 
     return datelist
 
-#new
+
+# new
 # 使用period_range函数
 def get_today_date(type_str):
     # 今天
@@ -60,6 +61,21 @@ def get_today_date(type_str):
         date_str = today_tushare_baostock
 
     return date_str
+
+
+def get_my_startdate_list(startdate, num, type_str):
+    t = pd.period_range(start=startdate, periods=num)
+
+    new_list = []
+
+    for i in range(0, num):
+
+        if type_str == 'baostock':
+            new_list.append(t[i].strftime('%Y-%m-%d'))
+        elif type_str == 'tushare':
+            new_list.append(t[i].strftime('%Y%m%d'))
+
+    return new_list
 
 
 def get_my_enddate_list(enddate, num, type_str):
@@ -92,3 +108,12 @@ def get_my_start_end_date_list(startdate, enddate, type_str):
     return new_list
 
 
+# 获取前一天
+def get_days_before_tushare(datestr, n):
+    date_datetime = pd.to_datetime(datestr, format='%Y%m%d')
+
+    date_daybefore = date_datetime - timedelta(n)
+
+    date_daybefore = date_daybefore.strftime('%Y%m%d')
+
+    return date_daybefore

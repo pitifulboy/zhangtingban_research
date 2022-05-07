@@ -69,7 +69,7 @@ def select_dietingban_df(tradedate):
         close = '%.2f' % (df1["close"][i])
         pre_close = df1["pre_close"][i]
         # 跌停价
-        down_limit = '%.2f' % (pre_close * (1-limit))
+        down_limit = '%.2f' % (pre_close * (1 - limit))
 
         if close == down_limit:
             share_list_num.append(i)
@@ -97,6 +97,16 @@ def select_shares_period(datelist):
     return df1
 
 
+# 选择一组股票交易数据，设置开始日期
+def select_one_share_by_startdate(share, startdate):
+
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql_1 = "SELECT  * FROM dailytrade WHERE ts_code = ('" + share + "') AND trade_date > " + startdate + " ORDER BY trade_date ASC"
+    df1 = pd.read_sql(mysql_1, conn)
+
+    return df1
+
+
 # 选择一组股票交易数据
 def select_data_by_shareslist(share_list):
     str = "','".join(share_list)
@@ -108,12 +118,23 @@ def select_data_by_shareslist(share_list):
     return df1
 
 
-# 选择一组股票交易数据
+# 选择一组股票交易数据，设置截止日期
 def select_data_by_shareslist_lastdate(share_list, lastdate):
     str = "','".join(share_list)
 
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
     mysql_1 = "SELECT  * FROM dailytrade WHERE ts_code IN ('" + str + "') AND trade_date <= " + lastdate + " ORDER BY trade_date ASC"
+    df1 = pd.read_sql(mysql_1, conn)
+
+    return df1
+
+
+# 选择一组股票交易数据，设置开始日期
+def select_data_by_shareslist_startdate(share_list, startdate):
+    str = "','".join(share_list)
+
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql_1 = "SELECT  * FROM dailytrade WHERE ts_code IN ('" + str + "') AND trade_date >= " + startdate + " ORDER BY trade_date ASC"
     df1 = pd.read_sql(mysql_1, conn)
 
     return df1
@@ -126,8 +147,6 @@ def select_share_by_date(tradedate):
     df1 = pd.read_sql(mysql_1, conn)
 
     return df1
-
-
 
 
 # 获取股票中文名称
@@ -184,6 +203,17 @@ def select_one_day_longhubang(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
     mysql = "SELECT  * FROM longhubang WHERE trade_date = '" + tradedate + "'"
     df = pd.read_sql(mysql, conn)
+    return df
+
+
+# 选择多日的龙虎榜
+def select_days_longhubang(datelist):
+    datelist_str = ",".join(datelist)
+
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql_1 = "SELECT  * FROM longhubang WHERE trade_date IN (" + datelist_str + ") "
+    df = pd.read_sql(mysql_1, conn)
+
     return df
 
 
