@@ -117,3 +117,14 @@ def get_days_before_tushare(datestr, n):
     date_daybefore = date_daybefore.strftime('%Y%m%d')
 
     return date_daybefore
+
+
+# 获取后一天
+def get_days_after_tushare(datestr, n):
+    date_datetime = pd.to_datetime(datestr, format='%Y%m%d')
+
+    date_dayafter = date_datetime + timedelta(n)
+
+    date_daybefore = date_dayafter.strftime('%Y%m%d')
+
+    return date_daybefore

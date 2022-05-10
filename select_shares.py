@@ -99,7 +99,6 @@ def select_shares_period(datelist):
 
 # 选择一个股票交易数据，设置开始日期
 def select_one_share_by_startdate(share, startdate):
-
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
     mysql_1 = "SELECT  * FROM dailytrade WHERE ts_code = ('" + share + "') AND trade_date > " + startdate + " ORDER BY trade_date ASC"
     df1 = pd.read_sql(mysql_1, conn)
@@ -223,3 +222,12 @@ def get_longhubang():
     mysql = "SELECT  * FROM longhubang "
     df = pd.read_sql(mysql, conn)
     return df
+
+
+# 选出日常交易中，最大日期，便于更新日常数据
+def get_dailytrade_maxdate():
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql = "SELECT MAX(trade_date) FROM dailytrade "
+    df = pd.read_sql(mysql, conn)
+    return df.iloc[0, 0]
+
