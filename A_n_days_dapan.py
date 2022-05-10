@@ -48,5 +48,5 @@ def n_days_dapan(enddate):
 
 
 # querydate = pd.Timestamp.now()
-querydate = '20220506'
+querydate = '20220509'
 n_days_dapan(querydate)

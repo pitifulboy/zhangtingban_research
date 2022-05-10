@@ -97,7 +97,7 @@ def select_shares_period(datelist):
     return df1
 
 
-# 选择一组股票交易数据，设置开始日期
+# 选择一个股票交易数据，设置开始日期
 def select_one_share_by_startdate(share, startdate):
 
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')

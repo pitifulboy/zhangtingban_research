@@ -16,7 +16,7 @@ def get_zhangdie_limit(ts_code):
     elif ts_code[0:1] == '8':
         limit = 0.3
     elif ts_code[0:2] == '68':
-        limit = 0.3
+        limit = 0.2
     elif ts_code[0:1] == '6':
         limit = 0.1
     return limit

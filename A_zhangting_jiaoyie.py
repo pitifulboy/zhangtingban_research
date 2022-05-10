@@ -50,7 +50,7 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
 
 
 # queryday = get_today_date('tushare')
-queryday = '20220506'
+queryday = '20220509'
 
 # 查询涨停
 query_dailytrade_by_date_and_type(queryday, '涨停')

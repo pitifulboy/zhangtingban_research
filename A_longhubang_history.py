@@ -39,7 +39,14 @@ my_longhubang_datelist = select_days_longhubang(my_datelist)
 # print(my_longhubang_datelist)
 
 # 选定席位
-this_exalter = '财通证券股份有限公司杭州上塘路证券营业部'
+#this_exalter = '财通证券股份有限公司杭州上塘路证券营业部'
+#this_exalter = '中信证券股份有限公司上海溧阳路证券营业部'
+#this_exalter = '中国银河证券股份有限公司大连金马路证券营业部'
+
+#this_exalter = '华泰证券股份有限公司上海牡丹江路证券营业部'
+this_exalter = '华鑫证券有限责任公司宁波分公司'
+
+
 
 # 获取该席位龙虎榜买入记录
 lhb_this_exalter = my_longhubang_datelist.loc[
@@ -69,19 +76,19 @@ for i in range(0, len(lhb_this_exalter)):
     for j in range(0, num_day):
         # 开盘涨幅
         kp_zf = '%.2f' % (float(share_after_lhb_part.loc[j, 'open']) / float(
-            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)
+            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)+'%'
 
         # 最大涨幅
         zd_zf = '%.2f' % (float(share_after_lhb_part.loc[j, 'high']) / float(
-            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)
+            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)+'%'
 
         # 最小涨幅
         zx_zf = '%.2f' % (float(share_after_lhb_part.loc[j, 'low']) / float(
-            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)
+            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)+'%'
 
         # 收盘涨幅
         sp_zf = '%.2f' % (float(share_after_lhb_part.loc[j, 'close']) / float(
-            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)
+            share_after_lhb_part.loc[j, 'pre_close']) * 100 - 100)+'%'
 
         anay_list.append([kp_zf, zd_zf, zx_zf, sp_zf])
 
