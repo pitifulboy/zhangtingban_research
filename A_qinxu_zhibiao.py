@@ -44,6 +44,6 @@ def qinxu_oneday(querday):
     print('备注：忽略部分ST个股。')
 
 
-qinxu_oneday('20220509')
+'''qinxu_oneday('20220509')'''
 
 

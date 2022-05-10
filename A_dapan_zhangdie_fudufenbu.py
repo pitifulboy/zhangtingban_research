@@ -84,6 +84,6 @@ def draw_zhangdie_fenbu_bar(querydate):
 #querydate = get_today_date('tushare')
 
 # 生成指定日期涨跌分布
-querydate = '20220509'
+#querydate = '20220509'
 
-draw_zhangdie_fenbu_bar(querydate)
+#draw_zhangdie_fenbu_bar(querydate)

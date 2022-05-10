@@ -44,9 +44,9 @@ def n_days_dapan(enddate):
     mygrid.add(mybar, grid_opts=opts.GridOpts(pos_bottom='10%', pos_top='10%'))
     mygrid.render("gen_15days_dapan.html")
 
-    make_snapshot(snapshot, "gen_15days_dapan.html", querydate+"15日大盘涨跌分布.png", pixel_ratio=2)
+    make_snapshot(snapshot, "gen_15days_dapan.html", enddate+"15日大盘涨跌分布.png", pixel_ratio=2)
 
 
 # querydate = pd.Timestamp.now()
-querydate = '20220509'
-n_days_dapan(querydate)
+#querydate = '20220509'
+#n_days_dapan(querydate)

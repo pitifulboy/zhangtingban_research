@@ -74,21 +74,20 @@ def oneday_lbtt(querydate):
 
     return lbtt_ordered
 
-
+# 查询当日连板天梯
 def today_lbtt():
     querydate = get_today_date('tushare')
     # 生成今日涨跌分布
     oneday_lbtt(querydate)
 
-
+# 查询多日连板天梯
 def date_list_lbtt(startday, enddaste):
     t = get_my_start_end_date_list(startday, enddaste, 'tushare')
     for i in range(len(t)):
         oneday_lbtt(t[i])
 
 
-# 查询单日连板天梯
-oneday_lbtt('20220509')
+
 
 # 查询今日连板天梯
 # today_lbtt()
