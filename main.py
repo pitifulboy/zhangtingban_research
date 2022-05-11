@@ -3,6 +3,7 @@ from A_lbtt_strategy import oneday_lbtt
 from A_n_days_dapan import n_days_dapan
 from A_qinxu_zhibiao import qinxu_oneday
 from A_zhangting_jiaoyie import query_dailytrade_by_date_and_type
+from A_zhangting_zhaban_data import calulate_jiaoyie
 from my_time_func import get_today_date, get_days_after_tushare, get_my_start_end_date_list
 from select_shares import get_dailytrade_maxdate, select_share_by_date
 from update_daily_data import update_tradedata_from_toshare, update_tradedata_from_toshare_by_datelist
@@ -36,9 +37,15 @@ else:
     print('计算多日涨跌分布')
     n_days_dapan(today_date)
     # 查询涨停
+    print('导出涨跌停excel')
     query_dailytrade_by_date_and_type(today_date, '涨停')
     # 查询炸板df
     query_dailytrade_by_date_and_type(today_date, '炸板')
+    # 计算大盘交易额，涨停炸板交易额
+    print('计算大盘交易额，涨停炸板交易额')
+    calulate_jiaoyie(today_date)
     qinxu_oneday(today_date)
+
+
 
 

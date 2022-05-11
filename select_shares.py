@@ -53,7 +53,7 @@ def select_zhaban_df(tradedate):
     return df1.iloc[share_list_num]
 
 
-# 涨停股票dataframe,根据涨跌幅限制选择.10%,20%,30%涨跌幅
+# 涨停股票dataframe,根据日内交易数据查询
 def select_zhangtingban_df_bydf(daylitrade_df):
     df1 = daylitrade_df
 
@@ -75,7 +75,7 @@ def select_zhangtingban_df_bydf(daylitrade_df):
     return df1.iloc[share_list_num]
 
 
-# 选出炸板股票dataframe，根据涨跌幅限制选择.10%,20%,30%涨跌幅
+# 选出炸板股票dataframe,根据日内交易数据查询
 def select_zhaban_df_bydf(daylitrade_df):
     df1 = daylitrade_df
     share_list_num = []
@@ -95,8 +95,6 @@ def select_zhaban_df_bydf(daylitrade_df):
             share_list_num.append(i)
 
     return df1.iloc[share_list_num]
-
-
 
 
 # 跌停股票dataframe,，根据涨跌幅限制选择.10%,20%,30%涨跌幅
@@ -276,4 +274,3 @@ def get_dailytrade_maxdate():
     mysql = "SELECT MAX(trade_date) FROM dailytrade "
     df = pd.read_sql(mysql, conn)
     return df.iloc[0, 0]
-

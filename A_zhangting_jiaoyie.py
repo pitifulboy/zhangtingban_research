@@ -57,7 +57,7 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     my_df_full.to_excel(path2, sheet_name='1', engine='openpyxl')
 
 
-# queryday = get_today_date('tushare')
+'''# queryday = get_today_date('tushare')
 queryday = '20220509'
 
 # 查询涨停
@@ -65,3 +65,4 @@ query_dailytrade_by_date_and_type(queryday, '涨停')
 
 # 查询炸板df
 query_dailytrade_by_date_and_type(queryday, '炸板')
+'''
