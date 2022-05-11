@@ -53,6 +53,52 @@ def select_zhaban_df(tradedate):
     return df1.iloc[share_list_num]
 
 
+# 涨停股票dataframe,根据涨跌幅限制选择.10%,20%,30%涨跌幅
+def select_zhangtingban_df_bydf(daylitrade_df):
+    df1 = daylitrade_df
+
+    # 涨停个股角标数字
+    share_list_num = []
+    for i in range(len(df1)):
+        ts_code = df1['ts_code'][i]
+        limit = get_zhangdie_limit(ts_code)
+
+        close = '%.2f' % (df1["close"][i])
+
+        pre_close = df1["pre_close"][i]
+        # 涨停价
+        up_limit = '%.2f' % (pre_close * (1 + limit))
+
+        if close == up_limit:
+            share_list_num.append(i)
+
+    return df1.iloc[share_list_num]
+
+
+# 选出炸板股票dataframe，根据涨跌幅限制选择.10%,20%,30%涨跌幅
+def select_zhaban_df_bydf(daylitrade_df):
+    df1 = daylitrade_df
+    share_list_num = []
+
+    for i in range(len(df1)):
+        ts_code = df1['ts_code'][i]
+        limit = get_zhangdie_limit(ts_code)
+
+        high = '%.2f' % (df1["high"][i])
+        close = '%.2f' % (df1["close"][i])
+        pre_close = df1["pre_close"][i]
+        # 涨停价
+        up_limit = '%.2f' % (pre_close * (1 + limit))
+
+        # 炸板股票
+        if high == up_limit and close < up_limit:
+            share_list_num.append(i)
+
+    return df1.iloc[share_list_num]
+
+
+
+
 # 跌停股票dataframe,，根据涨跌幅限制选择.10%,20%,30%涨跌幅
 
 def select_dietingban_df(tradedate):
