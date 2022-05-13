@@ -68,43 +68,69 @@ def get_lhb_top_100_amount():
 # 席位买入榜top100 涨停数和涨停率
 
 
-# 获取指定时间段的全部龙虎榜数据
-my_datelist = get_my_start_end_date_list('20220401', '20220429', 'tushare')
-my_longhubang_datelist = select_days_longhubang(my_datelist)
-
-# 修正龙虎榜时间
-#my_longhubang_datelist['trade_date'] = my_longhubang_datelist.apply(lambda x: get_days_before_tushare(x.trade_date, 1), axis=1)
-
 # 选定席位
+def caculate_lhb_xiwei_daban():
+    # 获取指定时间段的全部龙虎榜数据
+    my_datelist = get_my_start_end_date_list('20220401', '20220429', 'tushare')
+    my_longhubang_datelist = select_days_longhubang(my_datelist)
 
-this_exalter = '华鑫证券有限责任公司宁波分公司'
+    # 修正龙虎榜时间
+    # my_longhubang_datelist['trade_date'] = my_longhubang_datelist.apply(lambda x: get_days_before_tushare(x.trade_date, 1), axis=1)
 
-# 获取该席位龙虎榜买入记录
-lhb_this_exalter = my_longhubang_datelist.loc[
-    (my_longhubang_datelist['exalter'] == this_exalter) & (my_longhubang_datelist['side'] == '0')]
+    this_exalter = '华鑫证券有限责任公司宁波分公司'
 
-# 获取龙虎榜最早日期，以此日期开始一次性读取所有个股交易数据。
-start_date = lhb_this_exalter.trade_date.min()
-#  获取个股list，并去重
-lhb_sharelist = lhb_this_exalter.ts_code.tolist()
-lhb_sharelist_unique = list(set(lhb_sharelist))
+    # 获取该席位龙虎榜买入记录
+    lhb_this_exalter = my_longhubang_datelist.loc[
+        (my_longhubang_datelist['exalter'] == this_exalter) & (my_longhubang_datelist['side'] == '0')]
 
-# 查询上榜个股交易数据
-df_lhb_one_exalter = select_data_by_shareslist_startdate(lhb_sharelist_unique, start_date)
+    # 选定买入的数据部分,去重多个原因上榜。
+    lhb_this_exalter_drop_reason = lhb_this_exalter.loc[my_longhubang_datelist['side'] == '0'].loc[:,
+                                   ['trade_date', 'ts_code', 'exalter', 'buy']]
+
+    # 由于多个原因重复上榜，需要去重
+    lhb_this_exalter_unique = lhb_this_exalter_drop_reason.drop_duplicates(keep='first')
+
+    # 获取龙虎榜最早日期，以此日期开始一次性读取所有个股交易数据。
+    start_date = lhb_this_exalter_unique.trade_date.min()
+    #  获取个股list，并去重
+    lhb_sharelist = lhb_this_exalter_unique.ts_code.tolist()
+    lhb_sharelist_unique = list(set(lhb_sharelist))
+
+    # 查询上榜个股交易数据
+    df_lhb_one_exalter = select_data_by_shareslist_startdate(lhb_sharelist_unique, start_date)
+
+    # 分析每次上榜，涨停数据
+    fina_data_list = []
+    for i in range(0, len(lhb_this_exalter_unique)):
+        # 上榜日
+        trade_date = lhb_this_exalter_unique.iloc[i, 0]
+        # 上榜个股
+        ts_code = lhb_this_exalter_unique.iloc[i, 1]
+        # 上榜后表现数据
+
+        share_after_lhb = df_lhb_one_exalter.loc[(df_lhb_one_exalter['ts_code'] == ts_code) & (
+                df_lhb_one_exalter['trade_date'].astype('int') >= int(trade_date))]
 
 
-# 分析每次上榜，是否涨停
-fina_data_list = []
-for i in range(0, len(lhb_this_exalter)):
-    # 上榜日
-    trade_date = lhb_this_exalter.iloc[i, 0]
-    # 上榜个股
-    ts_code = lhb_this_exalter.iloc[i, 1]
-    # 上榜后表现数据
+        # 判断上榜日是否涨停
+        limit = get_zhangdie_limit(ts_code)
+        close = '%.2f' % share_after_lhb.iloc[0].close
+        pre_close = share_after_lhb.iloc[0].pre_close
+        # 涨停价
+        up_limit = '%.2f' % (pre_close * (1 + limit))
 
-    share_after_lhb = df_lhb_one_exalter.loc[(df_lhb_one_exalter['ts_code'] == ts_code) & (df_lhb_one_exalter['trade_date'].astype('int')>= int(trade_date))]
-    print(share_after_lhb)
+        if close == up_limit:
+            fina_data_list.append(i)
 
-    #当日是否涨停
-    limit =get_zhangdie_limit(ts_code)
+    print(lhb_this_exalter_unique)
+    print(lhb_this_exalter_unique.iloc[fina_data_list])
+
+    result_list = [this_exalter, len(lhb_this_exalter_unique), len(fina_data_list)]
+    print(result_list)
+
+    return result_list
+
+
+caculate_lhb_xiwei_daban()
+
 

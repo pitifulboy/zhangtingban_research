@@ -11,6 +11,7 @@ from update_share_msg import update_share_name_from_tushare
 
 # 获取最新日期
 today_date = get_today_date('tushare')
+#today_date = '20220512'
 
 # 更新股票名称等股票信息表。
 # update_share_name_from_tushare()
@@ -45,7 +46,3 @@ else:
     print('计算大盘交易额，涨停炸板交易额')
     calulate_jiaoyie(today_date)
     qinxu_oneday(today_date)
-
-
-
-

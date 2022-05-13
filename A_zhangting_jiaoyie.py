@@ -24,7 +24,8 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     share_df_amount_chg['pct_chg'] = share_df_amount_chg['pct_chg'].round(0)
 
     if querytype == '涨停':
-        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by=['pct_chg', 'amount'], ascending=False,
+        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by=['pct_chg', 'amount'],
+                                                                      ascending=False,
                                                                       ignore_index=True)
 
     elif querytype == '炸板':
@@ -44,7 +45,6 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
         data_list.append([k + 1, code_name[7:11], str(amount), str(close), str(pct_chg), industry])
         data_list_full.append([k + 1, code_name, str(amount), str(close), str(pct_chg), industry])
 
-
     # 抖音格式
     my_df = pd.DataFrame(data_list, columns=['序号', '名称', '交易额（亿）', '收盘', '涨跌幅（%）', '行业'])
     # 完整格式
@@ -56,6 +56,11 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     path2 = r'D:\00 量化交易\\' + queryday + querytype + '完整.xlsx'
     my_df_full.to_excel(path2, sheet_name='1', engine='openpyxl')
 
+
+queryday = '20220509'
+
+# 查询涨停
+query_dailytrade_by_date_and_type(queryday, '涨停')
 
 '''# queryday = get_today_date('tushare')
 queryday = '20220509'
