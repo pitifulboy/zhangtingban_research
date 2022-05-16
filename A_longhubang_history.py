@@ -39,7 +39,7 @@ def xiwei_ana(my_datelist, this_exalter):
         share_after_lhb = select_one_share_by_startdate(lhb_this_exalter.iloc[i, 1], lhb_this_exalter.iloc[i, 0])
 
         # 分析上榜后n日数据
-        num_day = 3
+        num_day = 2
         #  添加股票信息,保留3个交易日数据
         share_after_lhb_ful_msg = add_share_msg_to_df(share_after_lhb).head(num_day)
 
@@ -49,7 +49,7 @@ def xiwei_ana(my_datelist, this_exalter):
         anay_list = []
         # 计算上榜后1日，开盘涨幅，最大涨幅，最大跌幅，收盘涨幅，
 
-        print(share_after_lhb_part)
+        # print(share_after_lhb_part)
 
         if len(share_after_lhb_part) < 2:
             pass
@@ -63,13 +63,13 @@ def xiwei_ana(my_datelist, this_exalter):
 
                 # print(open_this, high_this, low_this, close_this, pre_close_this)
                 # 开盘涨幅
-                kp_zf = '%.2f' % (open_this / pre_close_this * 100 - 100) + '%'
+                kp_zf = float('%.2f' % (open_this / pre_close_this * 100 - 100))
                 # 最大涨幅
-                zd_zf = '%.2f' % (high_this / pre_close_this * 100 - 100) + '%'
+                zd_zf = float('%.2f' % (high_this / pre_close_this * 100 - 100))
                 # 最小涨幅
-                zx_zf = '%.2f' % (low_this / pre_close_this * 100 - 100) + '%'
+                zx_zf = float('%.2f' % (low_this / pre_close_this * 100 - 100))
                 # 收盘涨幅
-                sp_zf = '%.2f' % (close_this / pre_close_this * 100 - 100) + '%'
+                sp_zf = float('%.2f' % (close_this / pre_close_this * 100 - 100))
 
                 anay_list.append([kp_zf, zd_zf, zx_zf, sp_zf])
 
@@ -86,23 +86,42 @@ def xiwei_ana(my_datelist, this_exalter):
             msg_df = [[trade_date, ts_code, name, amount]]
             # 拼接个股信息和数据
             ful_df = msg_df + anay_list
-
+            print(ful_df)
             fina_data_list.append([x for list_elements in ful_df for x in list_elements])
 
-            # 将数据转换为df格式
-        data_df = pd.DataFrame(fina_data_list,
-                               columns=['上榜日', '代码', '名称', '买入额', '0日开盘涨幅', '0日最大涨幅', '0日最小涨幅', '0日收盘涨幅', '1日开盘涨幅',
-                                        '1日最大涨幅', '1日最小涨幅', '1日收盘涨幅'])
+    # 将数据转换为df格式
+    data_df = pd.DataFrame(fina_data_list,
+                           columns=['上榜日', '代码', '名称', '买入额', '当日开盘涨幅', '当日最大涨幅', '当日最小涨幅', '当日收盘涨幅', '次日开盘涨幅',
+                                    '次日最大涨幅', '次日最小涨幅', '次日收盘涨幅'])
 
-        data_df['代码名称'] = data_df['代码'] + data_df['名称']
-        data_df['代码名称'] = data_df['代码名称'].str[3:11]
+    data_df['代码名称'] = data_df['代码'] + data_df['名称']
+    data_df['代码名称'] = data_df['代码名称'].str[3:11]
 
-        df_anay = data_df.loc[:, ['上榜日', '代码名称', '买入额', '0日收盘涨幅', '1日开盘涨幅', '1日最大涨幅', '1日最小涨幅', '1日收盘涨幅']]
+    df_anay = data_df.loc[:, ['上榜日', '代码名称', '买入额', '当日收盘涨幅', '次日开盘涨幅', '次日最大涨幅', '次日最小涨幅', '次日收盘涨幅']]
 
-        # 由于多个原因重复上榜，需要去重
-        df_anay_unique = df_anay.drop_duplicates(keep='first')
+    # 由于多个原因重复上榜，需要去重
+    df_anay_unique = df_anay.drop_duplicates(keep='first')
 
-        # print(df_anay_unique)
+    '''ava_name = '平均值'
+    ava_amount = df_anay_unique['买入额'].mean()
+    print(ava_amount)
+    ava_1day_kp = df_anay_unique['次日开盘涨幅'].mean()
+    print(ava_1day_kp)
+    ava_1day_zd = df_anay_unique['次日最大涨幅'].mean()
+    print(ava_1day_zd)
+    ava_1day_zx = df_anay_unique['次日最小涨幅'].mean()
+    print(ava_1day_zx)
+    ava_1day_sp = df_anay_unique['次日收盘涨幅'].mean()
+    print(ava_1day_sp)
 
-        path = r'D:\00 量化交易\\' + this_exalter + '.xlsx'
-        df_anay_unique.to_excel(path, sheet_name='1', engine='openpyxl')
+    ava_data_list = ['', ava_name, ava_amount, '', ava_1day_kp, ava_1day_zd, ava_1day_zx, ava_1day_sp]
+    ava_df = pd.DataFrame(ava_data_list,
+                          columns=['上榜日', '代码名称', '买入额', '当日收盘涨幅', '次日开盘涨幅', '次日最大涨幅', '次日最小涨幅', '次日收盘涨幅'])
+    df_anay_fina = pd.concat([df_anay_unique, ava_df], axis=1)
+
+    print(df_anay_fina)'''
+
+    # print(df_anay_unique)
+
+    path = r'D:\00 量化交易\\' + this_exalter + '.xlsx'
+    df_anay_unique.to_excel(path, sheet_name='1', engine='openpyxl')

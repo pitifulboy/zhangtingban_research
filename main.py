@@ -14,7 +14,7 @@ today_date = get_today_date('tushare')
 #today_date = '20220512'
 
 # 更新股票名称等股票信息表。
-# update_share_name_from_tushare()
+update_share_name_from_tushare()
 
 # 自动更细交易数据
 # 更新tushare日常交易数据

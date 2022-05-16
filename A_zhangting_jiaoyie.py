@@ -1,7 +1,6 @@
 import pandas as pd
 
 from df_manage_func import add_share_msg_to_df
-from my_time_func import get_my_start_end_date_list, get_today_date
 from select_shares import select_zhangtingban_df, select_zhaban_df
 
 
@@ -56,11 +55,11 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     path2 = r'D:\00 量化交易\\' + queryday + querytype + '完整.xlsx'
     my_df_full.to_excel(path2, sheet_name='1', engine='openpyxl')
 
-
+'''
 queryday = '20220509'
 
 # 查询涨停
-query_dailytrade_by_date_and_type(queryday, '涨停')
+query_dailytrade_by_date_and_type(queryday, '涨停')'''
 
 '''# queryday = get_today_date('tushare')
 queryday = '20220509'
