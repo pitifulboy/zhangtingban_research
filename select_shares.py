@@ -144,7 +144,7 @@ def select_shares_period(datelist):
 # 选择一个股票交易数据，设置开始日期
 def select_one_share_by_startdate(share, startdate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
-    mysql_1 = "SELECT  * FROM dailytrade WHERE ts_code = ('" + share + "') AND trade_date > " + startdate + " ORDER BY trade_date ASC"
+    mysql_1 = "SELECT  * FROM dailytrade WHERE ts_code = ('" + share + "') AND trade_date >= " + startdate + " ORDER BY trade_date ASC"
     df1 = pd.read_sql(mysql_1, conn)
 
     return df1
@@ -232,21 +232,58 @@ def select_5m_data_bydate(tradedate):
     return df
 
 
-# 选择单个席位的龙虎榜数据
-def select_one_share_by_longhubang_xiwei(xiwei):
-    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
-    mysql_1 = "SELECT  * FROM longhubang WHERE exalter = '" + xiwei + "' ORDER BY trade_date ASC"
-    df1 = pd.read_sql(mysql_1, conn)
+'''龙虎榜数据分析
+只分析部分日内交易上榜原因的龙虎榜
 
-    return df1
+['换手率达20%的证券',
+ '有价格涨跌幅限制的日价格振幅达到30%的前五只证券',
+ '跌幅偏离值达7%的证券', 
+ '有价格涨跌幅限制的日收盘价格跌幅达到15%的前五只证券', 
+'涨幅偏离值达7%的证券',
+ '有价格涨跌幅限制的日换手率达到30%的前五只证券', 
+'有价格涨跌幅限制的日收盘价格涨幅达到15%的前五只证券',]
+'''
 
 
 # 选择单日的龙虎榜
 def select_one_day_longhubang(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
-    mysql = "SELECT  * FROM longhubang WHERE trade_date = '" + tradedate + "'"
-    df = pd.read_sql(mysql, conn)
+
+    # 为避免报错，前后有 % 的时候，想要将其当做普通的 % ，则使用 %%
+    reason_list = ['换手率达20%%的证券',
+                   '有价格涨跌幅限制的日价格振幅达到30%%的前五只证券',
+                   '跌幅偏离值达7%%的证券',
+                   '有价格涨跌幅限制的日收盘价格跌幅达到15%%的前五只证券',
+                   '涨幅偏离值达7%%的证券',
+                   '有价格涨跌幅限制的日换手率达到30%%的前五只证券',
+                   '有价格涨跌幅限制的日收盘价格涨幅达到15%%的前五只证券', ]
+    reason_list_str = "','".join(reason_list)
+
+    mysql_1 = "SELECT  * FROM longhubang WHERE reason IN ( '" + reason_list_str + "')  AND trade_date = '" + tradedate + "'"
+
+    df = pd.read_sql(mysql_1, conn)
     return df
+
+
+# 选择单个席位的龙虎榜数据
+def select_one_share_by_longhubang_xiwei(xiwei):
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+
+    # 为避免报错，前后有 % 的时候，想要将其当做普通的 % ，则使用 %%
+    reason_list = ['换手率达20%%的证券',
+                   '有价格涨跌幅限制的日价格振幅达到30%%的前五只证券',
+                   '跌幅偏离值达7%%的证券',
+                   '有价格涨跌幅限制的日收盘价格跌幅达到15%%的前五只证券',
+                   '涨幅偏离值达7%%的证券',
+                   '有价格涨跌幅限制的日换手率达到30%%的前五只证券',
+                   '有价格涨跌幅限制的日收盘价格涨幅达到15%%的前五只证券', ]
+    reason_list_str = "','".join(reason_list)
+
+    mysql_1 = "SELECT  * FROM longhubang WHERE reason IN ( '" + reason_list_str + "')  AND exalter = '" + xiwei + "' ORDER BY trade_date ASC "
+
+    df1 = pd.read_sql(mysql_1, conn)
+
+    return df1
 
 
 # 选择多日的龙虎榜
@@ -254,17 +291,21 @@ def select_days_longhubang(datelist):
     datelist_str = ",".join(datelist)
 
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
-    mysql_1 = "SELECT  * FROM longhubang WHERE trade_date IN (" + datelist_str + ") "
+
+    # 为避免报错，前后有 % 的时候，想要将其当做普通的 % ，则使用 %%
+    reason_list = ['换手率达20%%的证券',
+                   '有价格涨跌幅限制的日价格振幅达到30%%的前五只证券',
+                   '跌幅偏离值达7%%的证券',
+                   '有价格涨跌幅限制的日收盘价格跌幅达到15%%的前五只证券',
+                   '涨幅偏离值达7%%的证券',
+                   '有价格涨跌幅限制的日换手率达到30%%的前五只证券',
+                   '有价格涨跌幅限制的日收盘价格涨幅达到15%%的前五只证券', ]
+    reason_list_str = "','".join(reason_list)
+
+    mysql_1 = "SELECT  * FROM longhubang WHERE reason IN ( '" + reason_list_str + "')  AND trade_date IN (" + datelist_str + ") "
+
     df = pd.read_sql(mysql_1, conn)
 
-    return df
-
-
-# 选择全部龙虎榜
-def get_longhubang():
-    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
-    mysql = "SELECT  * FROM longhubang "
-    df = pd.read_sql(mysql, conn)
     return df
 
 
