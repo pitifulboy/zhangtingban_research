@@ -6,9 +6,8 @@ from my_time_func import get_my_start_end_date_list
 from select_shares import select_days_longhubang, select_data_by_shareslist_startdate
 import pandas as pd
 
-
 # 龙虎榜席位分析
-
+'''
 def xiwei_ana_longhubang():
     # 获取指定时间段的全部龙虎榜数据
     my_datelist = get_my_start_end_date_list('20220401', '20220429', 'tushare')
@@ -36,8 +35,8 @@ def xiwei_ana_longhubang():
     print(lhb_df_povit)
     path2 = r'D:\00 量化交易\\' + '4月龙虎榜透视' + '.xlsx'
     lhb_df_sorted.to_excel(path2, sheet_name='4月龙虎榜透视', engine='openpyxl')
-
-
+'''
+'''
 # 指定日期区间，龙虎榜席位列表
 
 def get_lhb_xiwei_list(my_datelist):
@@ -61,12 +60,9 @@ def get_lhb_xiwei_list(my_datelist):
 
     lhb_df_xiwei_list = lhb_df_sorted.index.tolist()
 
-    return lhb_df_xiwei_list
+    return lhb_df_xiwei_list'''
 
-
-# 席位买入榜top100 涨停数和涨停率
-
-
+'''
 # 选定席位,判断是否涨停
 def caculate_lhb_xiwei_daban(my_datelist, this_exalter):
     # 获取指定时间段的全部龙虎榜数据
@@ -179,36 +175,33 @@ def caculate_lhb_xiwei_lotsof_daban(my_datelist):
             df_lhb_and_dailytrade.iloc[i, 19] = 'no'
 
     return df_lhb_and_dailytrade.loc[:, ['trade_date', 'ts_code', 'exalter', 'buy', 'side', 'pct_chg', 'if_zhangting']]
+'''
 
 
 # 龙虎榜席位分析
 
-def lhb_daban_fenxi(data_df):
-    # 获取指定时间段的全部龙虎榜数据
-
-    my_longhubang_datelist = data_df
-
+def lhb_fenxi(data_df):
     # 选定买入的数据部分,去重多个原因上榜。
-    my_lhb_side0 = my_longhubang_datelist.loc[my_longhubang_datelist['side'] == '0'].loc[:,
-                   ['trade_date', 'ts_code', 'exalter', 'buy', 'pct_chg', 'if_zhangting']]
+    my_lhb_side0 = data_df.loc[data_df['side'] == '0'].loc[:,
+                   ['trade_date', 'ts_code', 'exalter', 'buy']]
 
     # 由于多个原因重复上榜，需要去重
     my_lhb_side0_unique = my_lhb_side0.drop_duplicates(keep='first')
 
     print(my_lhb_side0)
 
-    path = r'D:\00 量化交易\\' + '4月龙虎榜打板情况统计' + '.xlsx'
+    path = r'D:\00 量化交易\\' + '4月龙虎榜001' + '.xlsx'
     my_lhb_side0_unique.to_excel(path, sheet_name='4月龙虎榜打板情况统计', engine='openpyxl')
 
     # 透视,统计上榜次数和金额
-    lhb_df_povit = pd.pivot_table(my_lhb_side0_unique, index='exalter', values='ts_code', columns='if_zhangting',
-                                  aggfunc={'ts_code': np.count_nonzero})
+    lhb_df_povit = pd.pivot_table(my_lhb_side0_unique, index='exalter', values='buy',
+                                  aggfunc={'exalter': np.count_nonzero, 'buy': np.sum})
 
     # 排序,按照买入交易额降序
-    lhb_df_sorted = lhb_df_povit.fillna(0).sort_values(by='yes', ascending=False)
+    lhb_df_sorted = lhb_df_povit.fillna(0).sort_values(by='buy', ascending=False)
 
     print(lhb_df_sorted)
-    path2 = r'D:\00 量化交易\\' + '4月打板数据透视' + '.xlsx'
+    path2 = r'D:\00 量化交易\\' + '4月打板数据透视表' + '.xlsx'
     lhb_df_sorted.to_excel(path2, sheet_name='4月打板数据透视', engine='openpyxl')
 
     return lhb_df_sorted
@@ -216,17 +209,29 @@ def lhb_daban_fenxi(data_df):
 
 # 选定分析周期
 my_datelist = get_my_start_end_date_list('20220401', '20220429', 'tushare')
-# 获取龙虎榜数据
-lhb_data = caculate_lhb_xiwei_lotsof_daban(my_datelist)
-
-toushi_df = lhb_daban_fenxi(lhb_data)
+# 获取龙虎榜当日榜数据
+lhb_data = select_days_longhubang(my_datelist)
+# 透视上榜次数，金额，平均金额
+toushi_df = lhb_fenxi(lhb_data)
 # 筛选部分席位，减小计算量
-top_exalter_povittable = toushi_df.loc[(toushi_df.yes.astype('int') > 5) & (toushi_df.no.astype('int') < 40)]
+top_exalter_povittable = toushi_df.loc[
+    (toushi_df.exalter.astype('int') < 60) & (toushi_df.exalter.astype('int') > 5)]
 
 # 4月上榜次数超过9次的
 
-
+dfs = []
 for i in range(0, len(top_exalter_povittable)):
+    # 单个席位查询计算
     exalter_name = top_exalter_povittable.index[i]
-    print(exalter_name)
-    xiwei_ana(my_datelist, exalter_name)
+    # 执行查询计算
+    df_exalter_name = xiwei_ana(my_datelist, exalter_name)
+    print(df_exalter_name)
+    # 结果汇总
+    dfs.append(df_exalter_name)
+
+alldata = pd.concat(dfs)
+print(alldata)
+
+# 导出结果
+path = r'D:\00 量化交易\\汇总.xlsx'
+alldata.to_excel(path, sheet_name='1', engine='openpyxl')
