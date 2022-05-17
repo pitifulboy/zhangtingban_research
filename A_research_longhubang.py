@@ -139,14 +139,16 @@ def lhb_fenxi(data_df):
 
 
 # 选定分析周期
-my_datelist = get_my_start_end_date_list('20220401', '20220429', 'tushare')
+#my_datelist = get_my_start_end_date_list('20220401', '20220429', 'tushare')
+my_datelist = get_my_start_end_date_list('20220501', '20220513', 'tushare')
+
 # 获取龙虎榜当日榜数据
 lhb_data = select_days_longhubang(my_datelist)
 # 透视上榜次数，金额，平均金额
 toushi_df = lhb_fenxi(lhb_data)
 # 筛选部分席位，减小计算量
 top_exalter_povittable = toushi_df.loc[
-    (toushi_df.exalter.astype('int') < 50) & (toushi_df.exalter.astype('int') > 5)]
+    (toushi_df.exalter.astype('int') < 20) & (toushi_df.exalter.astype('int') > 2)]
 
 # 4月上榜次数超过9次的
 
