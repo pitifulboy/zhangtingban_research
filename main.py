@@ -1,13 +1,13 @@
 from A_dapan_zhangdie_fudufenbu import draw_zhangdie_fenbu_bar
-from A_gaobiao_dongtai import caculate_gaobiao_7_14_21
+from A_gaobiao_dongtai import  caculate_gaobiao_7_14
 from A_lbtt_strategy import oneday_lbtt
 from A_n_days_dapan import n_days_dapan
 from A_qinxu_zhibiao import qinxu_oneday
 from A_zhangting_jiaoyie import query_dailytrade_by_date_and_type
 from A_zhangting_zhaban_data import calulate_jiaoyie
 from my_time_func import get_today_date, get_days_after_tushare, get_my_start_end_date_list
-from select_shares import get_dailytrade_maxdate, select_share_by_date
-from update_daily_data import update_tradedata_from_toshare, update_tradedata_from_toshare_by_datelist
+from select_shares import get_dailytrade_maxdate
+from update_daily_data import update_tradedata_from_toshare_by_datelist
 from update_share_msg import update_share_name_from_tushare
 
 # 获取最新日期
@@ -40,7 +40,7 @@ else:
     print('计算多日涨跌分布')
     n_days_dapan(today_date)
     print('计算高标动态')
-    caculate_gaobiao_7_14_21()
+    caculate_gaobiao_7_14()
     # 查询涨停
     print('导出涨跌停excel')
     query_dailytrade_by_date_and_type(today_date, '涨停')

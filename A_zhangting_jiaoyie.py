@@ -3,6 +3,11 @@ import pandas as pd
 from df_manage_func import add_share_msg_to_df
 from select_shares import select_zhangtingban_df, select_zhaban_df
 
+# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
+# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
+# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
+# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
+# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
 
 def query_dailytrade_by_date_and_type(queryday, querytype):
     if querytype == '涨停':
@@ -23,7 +28,7 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     share_df_amount_chg['pct_chg'] = share_df_amount_chg['pct_chg'].round(0)
 
     if querytype == '涨停':
-        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by=['pct_chg', 'amount'],
+        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by=[ 'pct_chg', 'amount'],
                                                                       ascending=False,
                                                                       ignore_index=True)
 
@@ -54,6 +59,7 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
 
     path2 = r'D:\00 量化交易\\' + queryday + querytype + '完整.xlsx'
     my_df_full.to_excel(path2, sheet_name='1', engine='openpyxl')
+
 
 '''
 queryday = '20220509'

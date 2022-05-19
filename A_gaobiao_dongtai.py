@@ -66,8 +66,7 @@ def caculate_ndays_zhangfu(n_days):
 
 
 
-def caculate_gaobiao_7_14_21():
-    caculate_ndays_zhangfu(21)
+def caculate_gaobiao_7_14():
     caculate_ndays_zhangfu(14)
     caculate_ndays_zhangfu(7)
 
