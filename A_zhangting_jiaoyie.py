@@ -2,12 +2,8 @@ import pandas as pd
 
 from df_manage_func import add_share_msg_to_df
 from select_shares import select_zhangtingban_df, select_zhaban_df
+import numpy as np
 
-# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
-# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
-# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
-# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
-# TODO 按照板块区分，板块涨停交易额，并按照涨跌幅，金额排序
 
 def query_dailytrade_by_date_and_type(queryday, querytype):
     if querytype == '涨停':
@@ -28,7 +24,7 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     share_df_amount_chg['pct_chg'] = share_df_amount_chg['pct_chg'].round(0)
 
     if querytype == '涨停':
-        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by=[ 'pct_chg', 'amount'],
+        share_df_amount_chg_ordered = share_df_amount_chg.sort_values(by=['pct_chg', 'amount'],
                                                                       ascending=False,
                                                                       ignore_index=True)
 
@@ -40,29 +36,45 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     data_list_full = []
     # 按照排序后的列表顺序导出到excel
     for k in range(0, len(share_df_amount_chg_ordered)):
-        code_name = share_df_amount_chg_ordered.iloc[k, 0] + share_df_amount_chg_ordered.iloc[k, 2]
+        code_name = '***' + share_df_amount_chg_ordered.iloc[k, 0][-6:-3] + share_df_amount_chg_ordered.iloc[k, 2][
+                                                                            :-1] + '*'
         close = '%.2f' % share_df_amount_chg_ordered.iloc[k, 1]
         pre_close = '%.2f' % share_df_amount_chg_ordered.iloc[k, 5]
         amount = '%.2f' % (share_df_amount_chg_ordered.iloc[k, 3] / 100000)
         pct_chg = '%.2f' % (float(close) / float(pre_close) * 100 - 100)
         industry = share_df_amount_chg_ordered.iloc[k, 6]
-        data_list.append([k + 1, code_name[7:11], str(amount), str(close), str(pct_chg), industry])
+        data_list.append([k + 1, code_name, str(amount), str(close), str(pct_chg), industry])
         data_list_full.append([k + 1, code_name, str(amount), str(close), str(pct_chg), industry])
 
     # 抖音格式
     my_df = pd.DataFrame(data_list, columns=['序号', '名称', '交易额（亿）', '收盘', '涨跌幅（%）', '行业'])
-    # 完整格式
-    my_df_full = pd.DataFrame(data_list_full, columns=['序号', '名称', '交易额（亿）', '收盘', '涨跌幅（%）', '行业'])
 
     path = r'D:\00 量化交易\\' + queryday + querytype + '.xlsx'
     my_df.to_excel(path, sheet_name='1', engine='openpyxl')
 
-    path2 = r'D:\00 量化交易\\' + queryday + querytype + '完整.xlsx'
-    my_df_full.to_excel(path2, sheet_name='1', engine='openpyxl')
+    my_df_format = my_df.astype({'交易额（亿）': 'float'})
+
+    # 涨停板块分析，透视
+    # 透视,统计上榜次数和金额
+    my_df_povit = pd.pivot_table(my_df_format, index='行业', values='交易额（亿）',
+                                 aggfunc={'行业': np.count_nonzero, '交易额（亿）': np.sum})
+    print(my_df_povit.keys())
+
+    path2 = r'D:\00 量化交易\\' + queryday + querytype + '透视分析.xlsx'
+    lhb_df_format = my_df_povit.astype({'交易额（亿）': 'float', '行业': 'int'})
+    lhb_df_sorted = lhb_df_format.fillna(0).sort_values(by='交易额（亿）', ascending=False)
+    lhb_df_sorted.to_excel(path2, sheet_name='1', engine='openpyxl')
+
+
 
 
 '''
 queryday = '20220509'
+
+queryday = '20220509'
+
+# 查询涨停
+query_dailytrade_by_date_and_type(queryday, '涨停')
 
 # 查询涨停
 query_dailytrade_by_date_and_type(queryday, '涨停')'''

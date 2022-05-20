@@ -1,5 +1,5 @@
 from A_dapan_zhangdie_fudufenbu import draw_zhangdie_fenbu_bar
-from A_gaobiao_dongtai import  caculate_gaobiao_7_14
+from A_gaobiao_dongtai import caculate_gaobiao_7_14
 from A_lbtt_strategy import oneday_lbtt
 from A_n_days_dapan import n_days_dapan
 from A_qinxu_zhibiao import qinxu_oneday
@@ -12,7 +12,7 @@ from update_share_msg import update_share_name_from_tushare
 
 # 获取最新日期
 today_date = get_today_date('tushare')
-# today_date = '20220512'
+# today_date = '20220519'
 
 # 自动更细交易数据
 # 更新tushare日常交易数据
@@ -37,8 +37,8 @@ else:
     oneday_lbtt(today_date)
     print('计算当日涨跌分布')
     draw_zhangdie_fenbu_bar(today_date)
-    print('计算多日涨跌分布')
-    n_days_dapan(today_date)
+    '''print('计算多日涨跌分布')
+    n_days_dapan(today_date)'''
     print('计算高标动态')
     caculate_gaobiao_7_14()
     # 查询涨停
