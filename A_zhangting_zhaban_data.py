@@ -48,6 +48,7 @@ def days_jiaoyie_data(endday, day_num):
     data_all = data_all[::-1]
     return data_all
 
+
 # 绘制交易额组合图。大盘交易额+涨停交易额+炸板交易额
 def draw_pic_amounts_data(list_15):
     # 获取pyecharts所需数据
@@ -71,7 +72,7 @@ def draw_pic_amounts_data(list_15):
             xaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(rotate=-90, font_size=16)),
             yaxis_opts=opts.AxisOpts(is_show=False),
             title_opts=opts.TitleOpts(
-                title="炸板涨停及大盘交易额", pos_top='5%',
+                title=date_list[-1] + "日资金趋势", pos_top='5%',
                 title_textstyle_opts=opts.TextStyleOpts(font_size=36),
                 pos_left='center', ),
         )
@@ -86,8 +87,8 @@ def draw_pic_amounts_data(list_15):
             yaxis_index=1,
         )
             .set_series_opts(
-            linestyle_opts=opts.LineStyleOpts(width=2),
-            label_opts=opts.LabelOpts(position='inside', font_size=16, font_weight='lighter', color='#000000'))
+            linestyle_opts=opts.LineStyleOpts(width=4),
+            label_opts=opts.LabelOpts(position='inside', font_size=24, font_weight='lighter', color='#000000'))
     )
     overlap_bar_line = mybar.overlap(myLine)
 
@@ -127,13 +128,11 @@ def draw_pic_zhangtingzhaban_num_data(list_15):
 
     make_snapshot(snapshot, "zhangdingzhaban_num.html", date_list[-1] + "涨停炸板个数.png", pixel_ratio=2)
 
+
 def calulate_jiaoyie(date):
     list_my = days_jiaoyie_data(date, 15)
     draw_pic_amounts_data(list_my)
-    draw_pic_zhangtingzhaban_num_data(list_my)
+    #draw_pic_zhangtingzhaban_num_data(list_my)
 
 
-
-
-
-
+calulate_jiaoyie('20220519')
