@@ -36,8 +36,8 @@ def query_dailytrade_by_date_and_type(queryday, querytype):
     data_list_full = []
     # 按照排序后的列表顺序导出到excel
     for k in range(0, len(share_df_amount_chg_ordered)):
-        code_name = '***' + share_df_amount_chg_ordered.iloc[k, 0][-6:-3] + share_df_amount_chg_ordered.iloc[k, 2][
-                                                                            :-1] + '*'
+        code_name =  share_df_amount_chg_ordered.iloc[k, 0][-6:-3] + share_df_amount_chg_ordered.iloc[k, 2][
+                                                                            :-1]
         close = '%.2f' % share_df_amount_chg_ordered.iloc[k, 1]
         pre_close = '%.2f' % share_df_amount_chg_ordered.iloc[k, 5]
         amount = '%.2f' % (share_df_amount_chg_ordered.iloc[k, 3] / 100000)
