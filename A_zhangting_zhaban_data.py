@@ -134,5 +134,3 @@ def calulate_jiaoyie(date):
     draw_pic_amounts_data(list_my)
     #draw_pic_zhangtingzhaban_num_data(list_my)
 
-
-calulate_jiaoyie('20220519')
