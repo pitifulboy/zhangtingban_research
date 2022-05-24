@@ -4,6 +4,7 @@ from my_time_func import date_list_gen
 from my_token import get_tushare_token
 from tushare_to_baostock import baostock_date_to_tuhshare
 
+
 # 更新单日交易数据
 def update_tradedata_from_toshare(trade_date):
     # 建立mysql数据库的连接
@@ -38,8 +39,8 @@ def update_tradedata_from_toshare(trade_date):
     print(df)
     df.to_sql('dailytrade', con=conn, if_exists='append', index=False)
 
+
 # 更新多日交易数据
 def update_tradedata_from_toshare_by_datelist(datelist):
     for i in range(0, len(datelist)):
         update_tradedata_from_toshare(datelist[i])
-
