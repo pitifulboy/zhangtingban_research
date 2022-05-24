@@ -181,14 +181,17 @@ def monthly_lhb_analysis():
     path = r'D:\00 量化交易\\汇总.xlsx'
     alldata.to_excel(path, sheet_name='1', engine='openpyxl')
 
+    alldata_as_type = alldata.astype({'买入额': 'float'})
+
     # 透视,统计上榜次数和金额
-    lhb_df_povit = pd.pivot_table(alldata, index='席位', values=['买入额', '当日收盘涨幅', '次日开盘涨幅', '次日最大涨幅', '次日最小涨幅', '次日收盘涨幅'],
+    lhb_df_povit = pd.pivot_table(alldata_as_type, index='席位', values=['买入额', '当日收盘涨幅', '次日开盘涨幅', '次日最大涨幅', '次日最小涨幅', '次日收盘涨幅'],
                                   aggfunc={'席位': np.count_nonzero, '买入额': np.sum, '当日收盘涨幅': np.average,
                                            '次日开盘涨幅': np.average, '次日最大涨幅': np.average, '次日最小涨幅': np.average,
                                            '次日收盘涨幅': np.average})
 
-    # 排序,按照买入交易额降序
-    lhb_df_sorted = lhb_df_povit.fillna(0).sort_values(by=['买入额'], ascending=False)
+    lhb_df_povit_as_type = lhb_df_povit.astype({'买入额': 'float'})
+    lhb_df_sorted = lhb_df_povit_as_type.sort_values(by='买入额', ascending=False)
+
     # 导出结果
     path2 = r'D:\00 量化交易\\汇总透视.xlsx'
     lhb_df_sorted.to_excel(path2, sheet_name='1', engine='openpyxl')
@@ -196,10 +199,7 @@ def monthly_lhb_analysis():
     # 根据次日最大涨幅，筛选涨幅大于6%的席位。追踪此部分席位
 
 
-def weekly_lhb_analysis():
-    # 选定分析周期
-    # my_datelist = get_my_start_end_date_list('20220401', '20220429', 'tushare')
-    my_datelist = get_my_start_end_date_list('20220501', '20220513', 'tushare')
+def weekly_lhb_analysis(my_datelist):
 
     # 获取龙虎榜当日榜数据
     lhb_data = select_days_longhubang(my_datelist)
@@ -208,8 +208,6 @@ def weekly_lhb_analysis():
     # 筛选部分席位，减小计算量
     top_exalter_povittable = toushi_df.loc[
         (toushi_df.exalter.astype('int') < 20) & (toushi_df.exalter.astype('int') > 2)]
-
-    # 4月上榜次数超过9次的
 
     dfs = []
     # len(top_exalter_povittable)
@@ -231,21 +229,26 @@ def weekly_lhb_analysis():
     path = r'D:\00 量化交易\\汇总.xlsx'
     alldata.to_excel(path, sheet_name='1', engine='openpyxl')
 
+    alldata_as_type = alldata.astype({'买入额': 'float'})
+
     # 透视,统计上榜次数和金额
-    lhb_df_povit = pd.pivot_table(alldata, index='席位', values=['买入额', '当日收盘涨幅', '次日开盘涨幅', '次日最大涨幅', '次日最小涨幅', '次日收盘涨幅'],
+    lhb_df_povit = pd.pivot_table(alldata_as_type, index='席位',
+                                  values=['买入额', '当日收盘涨幅', '次日开盘涨幅', '次日最大涨幅', '次日最小涨幅', '次日收盘涨幅'],
                                   aggfunc={'席位': np.count_nonzero, '买入额': np.sum, '当日收盘涨幅': np.average,
                                            '次日开盘涨幅': np.average, '次日最大涨幅': np.average, '次日最小涨幅': np.average,
                                            '次日收盘涨幅': np.average})
 
-    # 排序,按照买入交易额降序
-    lhb_df_sorted = lhb_df_povit.fillna(0).sort_values(by=['买入额'], ascending=False)
+    lhb_df_sorted = lhb_df_povit.sort_values(by='买入额', ascending=False)
+
     # 导出结果
     path2 = r'D:\00 量化交易\\汇总透视.xlsx'
     lhb_df_sorted.to_excel(path2, sheet_name='1', engine='openpyxl')
 
-    # 根据次日最大涨幅，筛选涨幅大于6%的席位。追踪此部分席位
 
+my_datelist = get_my_start_end_date_list('20220516', '20220520', 'tushare')
+weekly_lhb_analysis(my_datelist)
 
+'''
 path = r'D:\00 量化交易\\汇总透视.xlsx'
 df = pd.read_excel(path, engine='openpyxl')
 df_select = df[(df['次日最大涨幅'] > 6) & (df['上榜次数'] > 3)]
@@ -258,3 +261,4 @@ selected_analysis_exalter_lhb = oneday_lhb[oneday_lhb['exalter'].isin(analysis_e
 # 留下代码
 list_my = list(set(selected_analysis_exalter_lhb.ts_code.tolist()))
 print(list_my)
+'''

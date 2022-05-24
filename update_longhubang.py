@@ -42,7 +42,7 @@ def update_longhubang(querydate):
 #  update_longhubang(querydate)
 
 # 20211201 - 5月6日
-date_list = get_my_start_end_date_list('20220516', '20220517', 'tushare')
+date_list = get_my_start_end_date_list('20220518', '20220523', 'tushare')
 
 for i in range(0, len(date_list)):
     update_longhubang(date_list[i])
