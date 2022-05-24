@@ -11,8 +11,8 @@ from update_daily_data import update_tradedata_from_toshare_by_datelist
 from update_share_msg import update_share_name_from_tushare
 
 # 获取最新日期
-today_date = get_today_date('tushare')
-# today_date = '20220519'
+#today_date = get_today_date('tushare')
+today_date = '20220523'
 
 # 自动更细交易数据
 # 更新tushare日常交易数据
