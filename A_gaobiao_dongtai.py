@@ -51,11 +51,11 @@ def caculate_ndays_zhangfu(n_days):
     df_max_date = df_date_period.loc[df_date_period['trade_date'] == max_date]
 
     df_add_new_tradedata = pd.merge(left=df_full_msg, right=df_max_date, on='ts_code')
-    df_result_final = df_add_new_tradedata.loc[:, ['ts_code', 'name', 'industry', 'max_zhangfu', 'pct_chg']]
-    df_result_final.columns = ['代码', '名称', '板块', str(n_days) + '日涨幅', '今日涨幅']
+    df_result_final = df_add_new_tradedata.loc[:, [ 'name', 'industry', 'max_zhangfu', 'pct_chg']]
+    df_result_final.columns = [ '名称', '板块', str(n_days) + '日涨幅', '今日涨幅']
     print(df_result_final.keys())
     # 调整数据格式
-    df_result_final['代码'] = df_result_final['代码'].map(lambda x: x[-6:-3])
+    # df_result_final['代码'] = df_result_final['代码'].map(lambda x: x[-6:-3])
     df_result_final['名称'] = df_result_final['名称'].map(lambda x: x[:-2])
     df_result_final['今日涨幅'] = df_result_final['今日涨幅'].map(lambda x: '%0.2f' % x)
     df_result_final[str(n_days) + '日涨幅'] = df_result_final[str(n_days) + '日涨幅'].map(lambda x: '%0.2f' % x)
