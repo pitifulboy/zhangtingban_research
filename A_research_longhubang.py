@@ -122,7 +122,7 @@ def lhb_fenxi(data_df):
 
     print(my_lhb_side0)
 
-    path = r'D:\00 量化交易\\' + '4月龙虎榜001' + '.xlsx'
+    path = r'D:\00 量化交易\\' + '当前周期龙虎榜汇总' + '.xlsx'
     my_lhb_side0_unique.to_excel(path, sheet_name='4月龙虎榜打板情况统计', engine='openpyxl')
 
     # 透视,统计上榜次数和金额
@@ -141,7 +141,7 @@ def lhb_fenxi(data_df):
        设置dataframe格式，涨跌幅小数点后2位，交易额以万为单位
     '''
 
-    path2 = r'D:\00 量化交易\\' + '4月打板数据透视表' + '.xlsx'
+    path2 = r'D:\00 量化交易\\' + '当前周期龙虎榜透视表' + '.xlsx'
     lhb_df_sorted.to_excel(path2, sheet_name='4月打板数据透视', engine='openpyxl')
 
     return lhb_df_sorted
@@ -245,7 +245,7 @@ def weekly_lhb_analysis(my_datelist):
     lhb_df_sorted.to_excel(path2, sheet_name='1', engine='openpyxl')
 
 
-my_datelist = get_my_start_end_date_list('20220516', '20220520', 'tushare')
+my_datelist = get_my_start_end_date_list('20220523', '20220528', 'tushare')
 weekly_lhb_analysis(my_datelist)
 
 '''

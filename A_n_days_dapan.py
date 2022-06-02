@@ -3,7 +3,6 @@ from pyecharts import options as opts
 from pyecharts.charts import Bar, Grid
 from pyecharts.render import make_snapshot
 from snapshot_phantomjs import snapshot
-
 from dapan_zhangdie_sharenum import get_dapan_zhangdie_num
 
 
