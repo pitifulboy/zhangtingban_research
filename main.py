@@ -1,7 +1,6 @@
 from A_dapan_zhangdie_fudufenbu import draw_zhangdie_fenbu_bar
 from A_gaobiao_dongtai import caculate_gaobiao_7_14
 from A_lbtt_strategy import oneday_lbtt
-from A_n_days_dapan import n_days_dapan
 from A_qinxu_zhibiao import qinxu_oneday
 from A_zhangting_jiaoyie import query_dailytrade_by_date_and_type
 from A_zhangting_zhaban_data import calulate_jiaoyie
