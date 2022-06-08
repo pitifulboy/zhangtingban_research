@@ -44,20 +44,20 @@ def oneday_lbtt(querydate):
             lbtt.append([share_df_full.ts_code.iloc[0] + share_df_full.name.iloc[0], querydate, n])
 
     lbtt_ordered = sorted(lbtt, key=itemgetter(2), reverse=False)
-
-    name = [x[0][7:11] for x in lbtt_ordered]
+    # name = [x[0][7:11] for x in lbtt_ordered]
+    name = [x[0] for x in lbtt_ordered]
     num = [x[2] for x in lbtt_ordered]
 
     # 作图
     mybar = (
         Bar()
-            .add_xaxis(name)
-            .add_yaxis("连板数", num)
-            .reversal_axis()
-            .set_series_opts(
+        .add_xaxis(name)
+        .add_yaxis("连板数", num)
+        .reversal_axis()
+        .set_series_opts(
             label_opts=opts.LabelOpts(is_show=True, font_size=18, color="#000000", position='right'),
         )
-            .set_global_opts(
+        .set_global_opts(
             title_opts=opts.TitleOpts(title=querydate[4:] + "连板天梯", pos_top='5%',
                                       pos_left='center', title_textstyle_opts=opts.TextStyleOpts(font_size=36), ),
             xaxis_opts=opts.AxisOpts(is_show=False),

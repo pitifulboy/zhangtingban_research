@@ -43,8 +43,8 @@ def kc68_date_list(startday, enddaste):
     t = get_my_start_end_date_list(startday, enddaste, 'tushare')
     print('交易额+涨停板分析')
     for i in range(len(t)):
-        kc68_one_day(t[i], 'kechuang')
-    # kc68_one_day(t[i], 'chuangye')
+        #  kc68_one_day(t[i], 'kechuang')
+        kc68_one_day(t[i], 'chuangye')
 
 
-kc68_date_list('20220523', '20220602')
+kc68_date_list('20220601', '20220602')
