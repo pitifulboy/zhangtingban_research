@@ -1,7 +1,7 @@
 import numpy as np
 from my_time_func import get_my_start_end_date_list
 from df_manage_func import add_share_msg_to_df
-from select_shares import select_days_longhubang, select_one_share_by_startdate, select_one_day_longhubang
+from select_shares import select_days_longhubang, select_one_share_by_startdate
 import pandas as pd
 
 
