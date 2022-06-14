@@ -15,6 +15,8 @@ def days_money_flow(datelist):
                                  aggfunc=np.sum, margins=False)
     print(my_df_povit)
 
+    print(my_df_povit.query('market == "中小板" '))
+
     return my_df_povit
 
 
