@@ -1,8 +1,6 @@
 from sqlalchemy import create_engine
 import tushare as ts
-from my_time_func import date_list_gen
 from my_token import get_tushare_token
-from tushare_to_baostock import baostock_date_to_tuhshare
 
 
 # 更新单日交易数据
@@ -44,3 +42,16 @@ def update_tradedata_from_toshare(trade_date):
 def update_tradedata_from_toshare_by_datelist(datelist):
     for i in range(0, len(datelist)):
         update_tradedata_from_toshare(datelist[i])
+
+
+'''# 获取mysql中存储的最新日期
+    maxdate = get_dailytrade_maxdate()
+    # 起始日期是mysql日期的后一天
+    update_start = get_days_after_tushare(maxdate, 1)
+
+    # 判断mysql中是否已经更新最新数据，如果不是最新数据
+    if maxdate != today_date:
+        # 生成需要更新的datelist
+        date_list = get_my_start_end_date_list(update_start, today_date, 'tushare')
+        # 更新日常交易数据
+        update_tradedata_from_toshare_by_datelist(date_list)'''
