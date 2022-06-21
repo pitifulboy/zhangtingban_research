@@ -10,12 +10,15 @@ def days_money_flow(datelist):
     today_trade_df = select_shares_period(datelist)
     # 添加个股信息
     today_trade_df_ful_msg = add_share_msg_to_df(today_trade_df)
-
+    # 市场透视
     my_df_povit = pd.pivot_table(today_trade_df_ful_msg, index='market', columns='trade_date', values='amount',
                                  aggfunc=np.sum, margins=False)
     print(my_df_povit)
 
-    print(my_df_povit.query('market == "中小板" '))
+    my_df_povit_industry = pd.pivot_table(today_trade_df_ful_msg, index='industry', columns='trade_date',
+                                          values='amount',
+                                          aggfunc=np.sum, margins=False)
+    print(my_df_povit_industry.sort_values(by='industry', ascending=False))
 
     return my_df_povit
 
