@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 
 
+# 交易市场资金变化
 def days_money_flow(datelist):
     # 当日交易数据
     today_trade_df = select_shares_period(datelist)
