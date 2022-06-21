@@ -7,7 +7,7 @@ import numpy as np
 
 # 交易市场资金变化
 def days_money_flow(datelist):
-    # 当日交易数据
+    # 交易数据
     today_trade_df = select_shares_period(datelist)
     # 添加个股信息
     today_trade_df_ful_msg = add_share_msg_to_df(today_trade_df)
@@ -24,6 +24,6 @@ def days_money_flow(datelist):
     return my_df_povit
 
 
-mydatelist = get_my_start_end_date_list('20220608', '20220614', 'tushare')
+mydatelist = get_my_start_end_date_list('20220608', '20220621', 'tushare')
 
 days_money_flow(mydatelist)

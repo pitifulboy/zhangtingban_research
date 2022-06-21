@@ -232,19 +232,6 @@ def select_5m_data_bydate(tradedate):
     return df
 
 
-'''龙虎榜数据分析
-只分析部分日内交易上榜原因的龙虎榜
-
-['换手率达20%的证券',
- '有价格涨跌幅限制的日价格振幅达到30%的前五只证券',
- '跌幅偏离值达7%的证券', 
- '有价格涨跌幅限制的日收盘价格跌幅达到15%的前五只证券', 
-'涨幅偏离值达7%的证券',
- '有价格涨跌幅限制的日换手率达到30%的前五只证券', 
-'有价格涨跌幅限制的日收盘价格涨幅达到15%的前五只证券',]
-'''
-
-
 # 选择单日的龙虎榜
 def select_one_day_longhubang(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
@@ -315,3 +302,27 @@ def get_dailytrade_maxdate():
     mysql = "SELECT MAX(trade_date) FROM dailytrade "
     df = pd.read_sql(mysql, conn)
     return df.iloc[0, 0]
+
+
+def select_A50():
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql_1 = "SELECT  * FROM a50 "
+    df1 = pd.read_sql(mysql_1, conn)
+
+    return df1
+
+
+def select_hs300():
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql_1 = "SELECT  * FROM hs300 "
+    df1 = pd.read_sql(mysql_1, conn)
+
+    return df1
+
+
+def select_zz500():
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql_1 = "SELECT  * FROM zz500 "
+    df1 = pd.read_sql(mysql_1, conn)
+
+    return df1
