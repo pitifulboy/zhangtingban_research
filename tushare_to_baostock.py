@@ -34,3 +34,11 @@ def tuhshare_date_to_baostock(tuhshare_date):
     baostock_date = time.strftime("%Y-%m-%d", timeArray)
 
     return baostock_date
+
+
+#  20220621095000000改为 0950
+def baostock_longtime_to_datetime(longtime):
+    timeArray = time.strptime(longtime, "%Y%m%d")
+    baostock_date = time.strftime("%Y-%m-%d", timeArray)
+
+    return baostock_date

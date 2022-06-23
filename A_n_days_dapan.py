@@ -22,7 +22,7 @@ def n_days_dapan(enddate):
     # 获取pyecharts所需数据
     date_list = [x[0] for x in list_15]
     up_list = [x[1] for x in list_15]
-    downlist = [-x[2] for x in list_15]
+    downlist = [x[2] for x in list_15]
 
     mybar = (
         Bar()
@@ -30,12 +30,12 @@ def n_days_dapan(enddate):
             .add_yaxis("上涨（含收平）", up_list, stack="stack1", itemstyle_opts=opts.ItemStyleOpts(color="#ff0000"), )
             .add_yaxis("下跌", downlist, stack="stack1", itemstyle_opts=opts.ItemStyleOpts(color="#00ff00"))
             .set_series_opts(
-            label_opts=opts.LabelOpts(is_show=True, position='inside', font_size=16, rotate=-90, font_weight='lighter',
+            label_opts=opts.LabelOpts(is_show=True, position='inside', font_size=12, rotate=-90, font_weight='lighter',
                                       color='#000000'))
             .set_global_opts(
-            xaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(rotate=-90, font_size=16)),
+            xaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(rotate=-90, font_size=12)),
             yaxis_opts=opts.AxisOpts(is_show=False),
-            title_opts=opts.TitleOpts(title=enddate[4:] + "前15个交易日个股涨跌数", pos_top='5%', title_textstyle_opts=opts.TextStyleOpts(font_size=36),
+            title_opts=opts.TitleOpts(title=enddate[4:] + "前15个交易日个股涨跌数", pos_top='5%', title_textstyle_opts=opts.TextStyleOpts(font_size=12),
                                       pos_left='center', ),
         )
     )
@@ -44,6 +44,8 @@ def n_days_dapan(enddate):
     mygrid.render("gen_15days_dapan.html")
 
     make_snapshot(snapshot, "gen_15days_dapan.html", enddate+"15日大盘涨跌分布.png", pixel_ratio=2)
+
+    return mygrid
 
 
 # querydate = pd.Timestamp.now()

@@ -218,7 +218,7 @@ def select_msg_by_shareslist(share_list):
 # 5分钟数据查询
 # 5分钟数据查询
 
-def select_5m_data(tradedate, share_code):
+'''def select_5m_data(tradedate, share_code):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
     mysql = "SELECT  * FROM chuban_5_minute_data WHERE date = '" + tradedate + "' AND code = '" + share_code + "'"
     df = pd.read_sql(mysql, conn)
@@ -229,7 +229,7 @@ def select_5m_data_bydate(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
     mysql = "SELECT  * FROM chuban_5_minute_data WHERE date = '" + tradedate + "'"
     df = pd.read_sql(mysql, conn)
-    return df
+    return df'''
 
 
 # 选择单日的龙虎榜

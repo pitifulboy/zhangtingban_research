@@ -128,6 +128,8 @@ def draw_pic_zhangtingzhaban_num_data(list_15):
 
     make_snapshot(snapshot, "zhangdingzhaban_num.html", date_list[-1] + "涨停炸板个数.png", pixel_ratio=2)
 
+    return mygrid
+
 
 def calulate_jiaoyie(date):
     list_my = days_jiaoyie_data(date, 15)

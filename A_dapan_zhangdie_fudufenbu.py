@@ -62,12 +62,12 @@ def draw_zhangdie_fenbu_bar(querydate):
             .add_xaxis(x)
             .add_yaxis("", y_axis=y)
             .set_series_opts(
-            label_opts=opts.LabelOpts(is_show=True, font_size=16, font_weight='lighter', color="#000000"),
+            label_opts=opts.LabelOpts(is_show=True, font_size=12, font_weight='lighter', color="#000000"),
         )
             .set_global_opts(
-            xaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(interval=0, rotate=-90, font_size=18), ),
+            xaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(interval=0, rotate=-90, font_size=12), ),
             title_opts=opts.TitleOpts(title=querydate[4:] + "个股涨跌分布", pos_top='5%',
-                                      pos_left='center', title_textstyle_opts=opts.TextStyleOpts(font_size=36), ),
+                                      pos_left='center', title_textstyle_opts=opts.TextStyleOpts(font_size=12), ),
             yaxis_opts=opts.AxisOpts(is_show=False, ),
         )
 
@@ -78,6 +78,8 @@ def draw_zhangdie_fenbu_bar(querydate):
     mygrid.render(querydate + "_shares.html")
 
     make_snapshot(snapshot, querydate + "_shares.html", querydate + "_shares.png", pixel_ratio=2)
+
+    return mygrid
 
 
 # 今天
