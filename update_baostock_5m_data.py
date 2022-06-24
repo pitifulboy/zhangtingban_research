@@ -32,10 +32,11 @@ def baostock_to_mysql_5m(trade_date, share_code_list):
     data_list = []
 
     for i in range(0, len(share_code_list)):
+        print("剩余数量：")
+        print(len(share_code_list)-i)
         share_code = tuhshare_to_baostock_sharecode(share_code_list[i])
         data = baostock_data_signalday_signalshare(trade_date, share_code)
-        print(share_code + "当日5分钟数据")
-        print(data)
+        print(data.head())
         data_list.append(data)
 
     df_datalist = pd.concat(data_list)
@@ -49,8 +50,9 @@ def baostock_to_mysql_5m(trade_date, share_code_list):
 
 if __name__ == '__main__':
 
-    start_date = '20220621'
-    end_date = '20220621'
+    # 已经存入数据日期 2022年6月20日-2022年6月21日
+    start_date = '20220620'
+    end_date = '20220620'
 
     # 生成日期list
     date_list = get_my_start_end_date_list(start_date, end_date, 'tushare')
