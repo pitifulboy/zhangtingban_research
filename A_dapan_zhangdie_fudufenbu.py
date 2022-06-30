@@ -3,7 +3,6 @@ from pyecharts.charts import Bar, Grid
 from pyecharts import options as opts
 from pyecharts.render import make_snapshot
 from snapshot_phantomjs import snapshot
-from my_time_func import get_today_date
 from select_shares import select_share_by_date
 
 

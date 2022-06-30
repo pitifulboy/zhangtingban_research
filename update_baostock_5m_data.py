@@ -50,9 +50,9 @@ def baostock_to_mysql_5m(trade_date, share_code_list):
 
 if __name__ == '__main__':
 
-    # 已经存入数据日期 2022年6月20日-2022年6月21日
-    start_date = '20220620'
-    end_date = '20220620'
+    # 已经存入数据日期 2022年6月20日-2022年6月24日
+    start_date = '20220625'
+    end_date = '20220625'
 
     # 生成日期list
     date_list = get_my_start_end_date_list(start_date, end_date, 'tushare')

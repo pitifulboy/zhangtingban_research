@@ -49,6 +49,6 @@ def a50_300_500_money_flow(datelist):
     zz500_my_df_povit.to_excel(path3, sheet_name='1', engine='openpyxl')
 
 
-mydatelist = get_my_start_end_date_list('20220608', '20220621', 'tushare')
+mydatelist = get_my_start_end_date_list('20220608', '20220629', 'tushare')
 
 a50_300_500_money_flow(mydatelist)
