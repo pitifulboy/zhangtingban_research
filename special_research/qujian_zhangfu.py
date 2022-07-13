@@ -3,7 +3,10 @@ from pyecharts.charts import Bar, Grid
 from pyecharts import options as opts
 from pyecharts.render import make_snapshot
 from snapshot_phantomjs import snapshot
+
+from df_manage_func import add_share_msg_to_df
 from select_shares import select_share_by_date
+
 
 # 分析时间段内，个股涨跌分布情况
 def period_zhangdie_fenbu(stratdate, enddate):
@@ -26,6 +29,11 @@ def period_zhangdie_fenbu(stratdate, enddate):
     df_merged['total_pct_chg'] = ((df_merged['close_y'] - df_merged['close_x']) / df_merged['close_y']) * 100
     print("个股累计涨幅")
     print(df_merged.loc[:, ["ts_code", "total_pct_chg"]])
+
+    # 添加个股信息
+    df_full = add_share_msg_to_df(df_merged)
+    path_00=r'D:\00 量化交易\\区间板块涨跌分析.xlsx'
+    df_full.to_excel(path_00, sheet_name='1', engine='openpyxl')
 
     # 大盘涨跌分布
     zhangdie_list = []
@@ -93,11 +101,11 @@ def period_draw_zhangdie_fenbu_bar(startdate, enddate):
     mygrid.add(mybar, grid_opts=opts.GridOpts(pos_bottom='15%'))
     mygrid.render("qujian_shares.html")
 
-    make_snapshot(snapshot, "qujian_shares.html", "区间_shares.png", pixel_ratio=2)
+    make_snapshot(snapshot, "qujian_shares.html", stratdate + "日-" + enddate + "日涨跌分布.png", pixel_ratio=2)
 
     return mygrid
 
 
 stratdate = '20220425'
-enddate = '20220628'
+enddate = '20220713'
 period_draw_zhangdie_fenbu_bar(stratdate, enddate)
