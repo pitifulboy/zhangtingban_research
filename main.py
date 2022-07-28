@@ -52,6 +52,6 @@ def daily_caculate(today_date):
 
 # 获取最新日期
 todaydate = get_today_date('tushare')
-#todaydate = '20220706'
+#todaydate = '20220718'
 
 daily_caculate(todaydate)

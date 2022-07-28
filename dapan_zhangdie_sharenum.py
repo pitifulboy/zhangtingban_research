@@ -2,9 +2,9 @@ import pandas as pd
 from select_shares import select_shares_period
 
 
-def get_dapan_zhangdie_num(startdate, enddaste):
+def get_dapan_zhangdie_num(startdate, enddate):
     # 生成日期dataframe
-    daylist = pd.date_range(start=startdate, end=enddaste)
+    daylist = pd.date_range(start=startdate, end=enddate)
     daylist_new = [x.strftime('%Y%m%d') for x in daylist]
     df_period = select_shares_period(daylist_new)
 
