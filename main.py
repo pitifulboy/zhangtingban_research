@@ -25,29 +25,29 @@ def daily_caculate(today_date):
         # 更新日常交易数据
         update_tradedata_from_toshare_by_datelist(date_list)
 
-    else:
-        # 更新股票名称等股票信息表。
-        update_share_name_from_tushare()
 
-        # 查询单日连板天梯
-        print('计算连板天梯')
-        oneday_lbtt(today_date)
-        print('计算当日涨跌分布')
-        draw_zhangdie_fenbu_bar(today_date)
-        '''print('计算多日涨跌分布')
-        n_days_dapan(today_date)'''
-        print('计算高标动态')
-        caculate_gaobiao_7_14()
-        # 查询涨停
-        print('导出涨跌停excel')
-        query_dailytrade_by_date_and_type(today_date, '涨停')
-        # 查询炸板df
-        query_dailytrade_by_date_and_type(today_date, '炸板')
-        # 计算大盘交易额，涨停炸板交易额
-        print('计算大盘交易额，涨停炸板交易额')
-        calulate_jiaoyie(today_date)
-        print('计算情绪指标')
-        qinxu_oneday(today_date)
+    # 更新股票名称等股票信息表。
+    update_share_name_from_tushare()
+
+    # 查询单日连板天梯
+    print('计算连板天梯')
+    oneday_lbtt(today_date)
+    print('计算当日涨跌分布')
+    draw_zhangdie_fenbu_bar(today_date)
+    '''print('计算多日涨跌分布')
+    n_days_dapan(today_date)'''
+    print('计算高标动态')
+    caculate_gaobiao_7_14()
+    # 查询涨停
+    print('导出涨跌停excel')
+    query_dailytrade_by_date_and_type(today_date, '涨停')
+    # 查询炸板df
+    query_dailytrade_by_date_and_type(today_date, '炸板')
+    # 计算大盘交易额，涨停炸板交易额
+    print('计算大盘交易额，涨停炸板交易额')
+    calulate_jiaoyie(today_date)
+    print('计算情绪指标')
+    qinxu_oneday(today_date)
 
 
 # 获取最新日期
