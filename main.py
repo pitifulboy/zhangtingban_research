@@ -25,7 +25,6 @@ def daily_caculate(today_date):
         # 更新日常交易数据
         update_tradedata_from_toshare_by_datelist(date_list)
 
-
     # 更新股票名称等股票信息表。
     update_share_name_from_tushare()
 
@@ -52,6 +51,6 @@ def daily_caculate(today_date):
 
 # 获取最新日期
 todaydate = get_today_date('tushare')
-#todaydate = '20220718'
+# todaydate = '20220718'
 
 daily_caculate(todaydate)
