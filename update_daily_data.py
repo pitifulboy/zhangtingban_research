@@ -1,5 +1,7 @@
 from sqlalchemy import create_engine
 import tushare as ts
+
+from my_time_func import get_my_start_end_date_list
 from my_token import get_tushare_token
 
 
@@ -42,6 +44,8 @@ def update_tradedata_from_toshare(trade_date):
 def update_tradedata_from_toshare_by_datelist(datelist):
     for i in range(0, len(datelist)):
         update_tradedata_from_toshare(datelist[i])
+
+
 
 
 '''# 获取mysql中存储的最新日期

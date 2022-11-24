@@ -245,6 +245,6 @@ def weekly_lhb_analysis(my_datelist):
     lhb_df_sorted.to_excel(path2, sheet_name='1', engine='openpyxl')
 
 
-my_datelist = get_my_start_end_date_list('20220509', '20220608', 'tushare')
+my_datelist = get_my_start_end_date_list('20221001', '20221123', 'tushare')
 weekly_lhb_analysis(my_datelist)
 
