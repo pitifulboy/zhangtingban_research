@@ -128,3 +128,13 @@ def get_days_after_tushare(datestr, n):
     date_daybefore = date_dayafter.strftime('%Y%m%d')
 
     return date_daybefore
+
+
+# 在原datalist基础上增加天数
+def datelist_add_days(datalist, add_n_days):
+    startdate = datalist[0]
+    num = len(datalist) + add_n_days
+    new_list = get_my_startdate_list(startdate, num, 'tushare')
+    return new_list
+
+

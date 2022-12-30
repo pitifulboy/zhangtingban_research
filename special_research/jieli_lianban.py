@@ -7,7 +7,7 @@ from df_manage_func import add_share_msg_to_df
 from select_shares import select_shares_period
 
 startdate = '20220101'
-enddate = '20220726'
+enddate = '20221216'
 
 daylist = pd.date_range(start=startdate, end=enddate)
 daylist_new = [x.strftime('%Y%m%d') for x in daylist]
@@ -55,6 +55,6 @@ for i in range(1, len(trade_date_list)):
         df_zt['连板数'].loc[(df_zt['ts_code'] == share_tscode) & (df_zt['trade_date'] == thisday)] = lastday_lb_num + 1
         print(df_zt['连板数'].loc[(df_zt['ts_code'] == share_tscode) & (df_zt['trade_date'] == thisday)])
 
-path = r'D:\00 量化交易\\2022年7月28日接力连板分析.xlsx'
+path = r'D:\00 量化交易\\2022年12月17日接力连板分析.xlsx'
 resultdf=add_share_msg_to_df(df_zt)
 resultdf.to_excel(path, sheet_name='1', engine='openpyxl')

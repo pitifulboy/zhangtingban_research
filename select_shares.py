@@ -183,6 +183,20 @@ def select_data_by_shareslist_startdate(share_list, startdate):
     return df1
 
 
+# 选择一组股票交易数据，设置datalist
+def select_data_by_shareslist_datelist(share_list, datelist):
+    share_str = "','".join(share_list)
+    date_str = ",".join(datelist)
+
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+    mysql_1 = "SELECT  * FROM dailytrade WHERE ts_code IN ('" + share_str + "') AND trade_date  IN (" + date_str + ") ORDER BY trade_date ASC"
+    df1 = pd.read_sql(mysql_1, conn)
+
+
+
+    return df1
+
+
 # 选出一天的所有交易数据
 def select_share_by_date(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
@@ -231,7 +245,7 @@ def select_5m_data_bydate(tradedate):
     df = pd.read_sql(mysql, conn)
     return df'''
 
-
+'''
 # 选择单日的龙虎榜
 def select_one_day_longhubang(tradedate):
     conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
@@ -284,12 +298,51 @@ def select_days_longhubang(datelist):
                    '有价格涨跌幅限制的日价格振幅达到30%%的前五只证券',
                    '跌幅偏离值达7%%的证券',
                    '有价格涨跌幅限制的日收盘价格跌幅达到15%%的前五只证券',
+                   '有价格涨跌幅限制的日收盘价格涨幅偏离值达到7%%的前五只证券',
                    '涨幅偏离值达7%%的证券',
                    '有价格涨跌幅限制的日换手率达到30%%的前五只证券',
                    '有价格涨跌幅限制的日收盘价格涨幅达到15%%的前五只证券', ]
     reason_list_str = "','".join(reason_list)
 
     mysql_1 = "SELECT  * FROM longhubang WHERE reason IN ( '" + reason_list_str + "')  AND trade_date IN (" + datelist_str + ") "
+
+    df = pd.read_sql(mysql_1, conn)
+
+    return df
+'''
+# 选择单日的龙虎榜
+def select_one_day_longhubang(tradedate):
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+
+
+
+    mysql_1 = "SELECT  * FROM longhubang WHERE trade_date = '" + tradedate + "'"
+
+    df = pd.read_sql(mysql_1, conn)
+    return df
+
+
+# 选择单个席位的龙虎榜数据
+def select_one_share_by_longhubang_xiwei(xiwei):
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+
+
+
+    mysql_1 = "SELECT  * FROM longhubang WHERE exalter = '" + xiwei + "' ORDER BY trade_date ASC "
+
+    df1 = pd.read_sql(mysql_1, conn)
+
+    return df1
+
+
+# 选择多日的龙虎榜
+def select_days_longhubang(datelist):
+    datelist_str = ",".join(datelist)
+
+    conn = create_engine('mysql+pymysql://root:123456@localhost:3306/qtrade', encoding='utf8')
+
+
+    mysql_1 = "SELECT  * FROM longhubang WHERE trade_date IN (" + datelist_str + ") "
 
     df = pd.read_sql(mysql_1, conn)
 

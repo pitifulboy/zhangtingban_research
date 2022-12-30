@@ -122,7 +122,7 @@ def lhb_fenxi(data_df):
     print(my_lhb_side0)
 
     path = r'D:\00 量化交易\\' + '当前周期龙虎榜汇总' + '.xlsx'
-    my_lhb_side0_unique.to_excel(path, sheet_name='4月龙虎榜打板情况统计', engine='openpyxl')
+    my_lhb_side0_unique.to_excel(path, sheet_name='龙虎榜打板情况统计', engine='openpyxl')
 
     # 透视,统计上榜次数和金额
     lhb_df_povit = pd.pivot_table(my_lhb_side0_unique, index='exalter', values='buy',
@@ -141,7 +141,7 @@ def lhb_fenxi(data_df):
     '''
 
     path2 = r'D:\00 量化交易\\' + '当前周期龙虎榜透视表' + '.xlsx'
-    lhb_df_sorted.to_excel(path2, sheet_name='4月打板数据透视', engine='openpyxl')
+    lhb_df_sorted.to_excel(path2, sheet_name='打板数据透视', engine='openpyxl')
 
     return lhb_df_sorted
 
@@ -203,6 +203,7 @@ def monthly_lhb_analysis():
 def weekly_lhb_analysis(my_datelist):
     # 获取龙虎榜当日榜数据
     lhb_data = select_days_longhubang(my_datelist)
+    print(lhb_data)
     # 透视上榜次数，金额，平均金额
     toushi_df = lhb_fenxi(lhb_data)
     # 筛选部分席位，减小计算量
@@ -212,7 +213,7 @@ def weekly_lhb_analysis(my_datelist):
     dfs = []
     # len(top_exalter_povittable)
     for i in range(0, len(top_exalter_povittable)):
-        print('还剩')
+        print('还剩席位数：')
         print(len(top_exalter_povittable) - i)
         # 单个席位查询计算
         exalter_name = top_exalter_povittable.index[i]
@@ -245,6 +246,6 @@ def weekly_lhb_analysis(my_datelist):
     lhb_df_sorted.to_excel(path2, sheet_name='1', engine='openpyxl')
 
 
-my_datelist = get_my_start_end_date_list('20221001', '20221123', 'tushare')
+my_datelist = get_my_start_end_date_list('20221201', '20221229', 'tushare')
 weekly_lhb_analysis(my_datelist)
 

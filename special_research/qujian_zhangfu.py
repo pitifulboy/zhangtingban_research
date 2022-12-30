@@ -106,6 +106,6 @@ def period_draw_zhangdie_fenbu_bar(startdate, enddate):
     return mygrid
 
 
-stratdate = '20220425'
-enddate = '20221111'
+stratdate = '20221031'
+enddate = '20221212'
 period_draw_zhangdie_fenbu_bar(stratdate, enddate)
